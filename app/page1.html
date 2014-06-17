@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>FB app</title>
+	<style>
+	div {font-family:"lucida grande",tahoma,verdana,arial,sans-serif}
+	.box {width: 304pt; padding:2pt; background-color: #E9EAED; }
+	</style>
+    <script src="app.js"></script>
+    <script src="FileSaver.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+</head>
+<body style="margin:0;">
+
+	<div  style="background-color:#3B5998; color: white; height:50pt"><p>Languange Choices of Bilingual Users on Facebook</p></div>
+    <div style="width:100%; height:100px;"> 
+    <div style="float:left; width:50%; text-align:center;"><br>
+        <h2 id="scenarioNo">Scenario 1</h2>
+       <p id="scenario">Your are going to throw<br> a graduation party <br>7pm on May 9th.<br>
+        Invite people over to your place</p>
+        <img id="scenarioImage" src="grad.jpeg" height="200pt">
+    </div>
+    </div>
+    <div style="float:right; width:50%;"><br>
+    	<div class="box">
+        <img src="post1.jpg" width="400pt">	
+        <form action="javascript:getStatus(this.form)" id="usrform">
+            <textarea rows="4" cols="45" id="status" name="status" form="usrform" placeholder="Enter text here..."></textarea>
+          <input value="Post" type="submit" style="background-color:#3B5998; color: white; margin-left:86%">
+        </form>
+        </div>
+    </div>
+</body>
+</html>
