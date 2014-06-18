@@ -1,0 +1,50 @@
+<html>
+<head>
+	<div id="fb-root"></div>
+	<script>
+	window.fbAsyncInit = function() {
+		FB.init({
+      appId      : '646568805418075', // App ID
+      channelUrl : 'channel.html',
+      status     : true, // check login status
+      cookie     : true, // enable cookies to allow the server to access the session
+      xfbml      : true  // parse XFBML
+  });
+	};
+
+	(function(d){
+		var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+		if (d.getElementById(id)) {return;}
+		js = d.createElement('script'); js.id = id; js.async = true;
+		js.src = "http://connect.facebook.net/en_US/all.js";
+		ref.parentNode.insertBefore(js, ref);
+	}(document));
+
+	function Login() {
+		FB.login(function(response) {
+			if (response.authResponse) {
+				getUserInfo();
+			} else {
+				console.log('Autheorization failed.');
+			}
+		}, {scope: 'publish_stream'});
+	}
+
+	function getUserInfo() {
+		FB.api('/me/feed', function(response) {
+			console.log(response);
+		});
+	}
+
+	function Logout() {
+		FB.logout(function(){document.location.reload();});
+	}
+	</script>
+</head>
+<body>
+	<div id="status">
+		Click on Below Image to start the demo: <br/>
+		<img src="http://hayageek.com/examples/oauth/facebook/oauth-javascript/LoginWithFacebook.png" style="cursor:pointer;" onclick="Login()"/>
+	</div>
+</body>
+</html>
