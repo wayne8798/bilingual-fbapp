@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FB app</title>
+    <style>
+    div {font-family:"lucida grande",tahoma,verdana,arial,sans-serif}
+    .box {width: 304pt; padding:2pt; background-color: #E9EAED; }
+    .otherBox {width: 35%; margin-left: 3pt;}
+    p {margin: 0pt;}
+    </style>
+    <script src="page2.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+</head>
+<body style="margin:0;">
+
+    <div  style="background-color:#3B5998; color: white; height:50pt"><p>Languange Choices of Bilingual Users on Facebook</p></div>
+    <div style="width:100%; height:100px;">
+    <div style="float:left; width:50%; text-align:center;"><br>
+        <img src="samplePost.jpg" height="400pt">
+    </div>
+    <div style="float:right; width:50%; font-size: 9pt"><br>
+        <form method="post" action="status.php">
+        <p style="margin-top:12pt;">1. Do you remember posting this message?</p>
+        <input type="radio" value="Yes" name="Q1">Yes<br/>
+        <input type="radio" value="No" name="Q1">No<br/><br>
+
+        <p>2. Do you remember the intended audience?<br></p>
+        <input type="radio" value="Yes" name="Q2">Yes<br/>
+        <input type="radio" value="No" name="Q2">No<br/><br/>
+
+        <p>3. If so, who were they? (Select all that apply)<br/></p>
+        <input type="checkbox" value="family" name="audience[]">Family<br />
+        <input type="checkbox" value="work" name="audience[]">Work<br />
+        <input type="checkbox" value="friends" name="audience[]">Friends<br />
+        <input type="checkbox" value="other" name="audience[]">Other<br />
+        <input type="text" name="audienceOther" class="otherBox"><br><br />
+
+        <p id="Q4">4. Why did you write this post in English?<br/></p>
+        <input type="checkbox" id ="appropriate" value="appropriate" name="langChoice[]">English is more appropriate for expressing the content<br />
+        <input type="checkbox" value="audience" name="langChoice[]">To address a specific audience<br />
+        <input type="checkbox" value="quote" name="langChoice[]">To quote something<br />
+        <input type="checkbox" value="other" name="langChoice[]">Other<br />
+        <input type="text" name="langOther" class="otherBox"><br><br><br>
+        <input type="hidden" id="postNo" name="postNo" value="1">
+        <input type="submit" value="next" name="submit" style="margin-left:30%">
+        </form>
+    </div>
+</body>
+</html>
