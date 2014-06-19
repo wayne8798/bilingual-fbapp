@@ -72,7 +72,6 @@ d3.tsv("data.tsv", function(error, data) {
 var parseDate = d3.time.format("%Y%m").parse;
 
   color.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }));
-  console.log(data.filter(function(d, i){ return parseDate(d.date).getFullYear() == 2011; }));
   //filtering data to one year
   filteredData = data.filter(function(d, i){ return parseDate(d.date).getFullYear() == currentYear; });
   data.forEach(function(d) {
@@ -121,6 +120,7 @@ var parseDate = d3.time.format("%Y%m").parse;
       .style("stroke", function(d) { return color(d.name); });
 
   city.append("text")
+      .attr("class", "desc")
       .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; })
       .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.status) + ")"; })
       .attr("x", 3)
@@ -129,21 +129,62 @@ var parseDate = d3.time.format("%Y%m").parse;
 
 
 
+ d3.selectAll(".line").on("click", function(d, i){
+                                    console.log(d);
+                                });
+
+
+
 
   d3.selectAll("input").on("change", change);
+
   function change() {
     // clearTimeout(timeout);
     var currentYear = this.value;
-    console.log("got the year " + currentYear);
     filteredData = data.filter(function(d, i){ return (d.date).getFullYear() == currentYear; }); //refilter the data for the updated year
-    console.log(filteredData);
+
+    //update languages
+    languages = color.domain().map(function(name) {
+    return {
+      name: name,
+      values: filteredData.map(function(d) {
+        return {date: d.date, status: +d[name]};
+      })
+    };
+    });
 
 
+    x.domain(d3.extent(filteredData, function(d) { return d.date; }));
+
+    y.domain([
+      d3.min(languages, function(c) { return d3.min(c.values, function(v) { return v.status; }); }),
+      d3.max(languages, function(c) { return d3.max(c.values, function(v) { return v.status; }); })
+    ]);
+
+    console.log()
 
 
+    var city = d3.selectAll(".city")
+        .data(languages).enter();
+
+    var svg = d3.select("body").transition();
+
+      svg.select(".x.axis") // change the x axis
+        .duration(750)
+        .call(xAxis);
+      svg.select(".y.axis") // change the y axis
+        .duration(750)
+        .call(yAxis);
+
+        //update the city labels
+
+        //update the graph
+      svg.selectAll(".line")
+        .duration(750)
+        .attr("d", function(d,i) {console.log(d); return line(languages[i].values);})
+        .style("stroke", function(d) { return color(d.name); });
 
   }
-
 
 });
 
