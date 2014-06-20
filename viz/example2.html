@@ -167,6 +167,9 @@ var parseDate = d3.time.format("%Y%m").parse;
     var city = d3.selectAll(".city")
         .data(languages).enter();
 
+    var lines = d3.selectAll(".line")
+        .data(languages).enter();
+
     var svg = d3.select("body").transition();
 
       svg.select(".x.axis") // change the x axis
@@ -177,11 +180,12 @@ var parseDate = d3.time.format("%Y%m").parse;
         .call(yAxis);
 
         //update the city labels
+        svg.selectAll(".city").attr("d", function(d){console.log(d);});
 
         //update the graph
       svg.selectAll(".line")
         .duration(750)
-        .attr("d", function(d,i) {console.log(d); return line(languages[i].values);})
+        .attr("d", function(d,i) {return line(d.values);})
         .style("stroke", function(d) { return color(d.name); });
 
   }
