@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+body {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+
+</style>
+<form>
+  <label><input type="radio" name="mode" value="2011" first> 2011</label>
+  <label><input type="radio" name="mode" value="2012" second> 2012</label>
+</form>
+<body>
+<script src="http://d3js.org/d3.v3.js"></script>
+<script>
+
+var currentYear = 2011;
+var margin = {top: 20, right: 80, bottom: 30, left: 50},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+
+
+var x = d3.time.scale()
+    .range([0, width]);
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var color = d3.scale.category10();
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left");
+
+var line = d3.svg.line()
+    //.interpolate("basis") //interpolate for smoother curves
+    .x(function(d) { return x(d.date); })
+    .y(function(d) { return y(d.status); });
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.tsv("data.tsv", function(error, data) {
+
+var parseDate = d3.time.format("%Y%m").parse;
+
+  color.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }));
+  //filtering data to one year
+  filteredData = data.filter(function(d, i){ return parseDate(d.date).getFullYear() == currentYear; });
+  data.forEach(function(d) {
+    d.date = parseDate(d.date);
+  });
+
+  var languages = color.domain().map(function(name) {
+    return {
+      name: name,
+      values: filteredData.map(function(d) {
+        return {date: d.date, status: +d[name]};
+      })
+    };
+  });
+
+  x.domain(d3.extent(filteredData, function(d) { return d.date; }));
+
+  y.domain([
+    d3.min(languages, function(c) { return d3.min(c.values, function(v) { return v.status; }); }),
+    d3.max(languages, function(c) { return d3.max(c.values, function(v) { return v.status; }); })
+  ]);
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Number of updates");
+
+  var city = svg.selectAll(".city")
+      .data(languages)
+    .enter().append("g")
+      .attr("class", "city");
+
+  city.append("path")
+      .attr("class", "line")
+      .attr("d", function(d) { return line(d.values); })
+      .style("stroke", function(d) { return color(d.name); });
+
+  city.append("text")
+      .attr("class", "desc")
+      .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; })
+      .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.status) + ")"; })
+      .attr("x", 3)
+      .attr("dy", ".35em")
+      .text(function(d) { return d.name; });
+
+
+
+ d3.selectAll(".line").on("click", function(d, i){
+                                    console.log(d);
+                                });
+
+
+
+
+  d3.selectAll("input").on("change", change);
+
+  function change() {
+    // clearTimeout(timeout);
+    var currentYear = this.value;
+    filteredData = data.filter(function(d, i){ return (d.date).getFullYear() == currentYear; }); //refilter the data for the updated year
+
+    //update languages
+    languages = color.domain().map(function(name) {
+    return {
+      name: name,
+      values: filteredData.map(function(d) {
+        return {date: d.date, status: +d[name]};
+      })
+    };
+    });
+
+
+    x.domain(d3.extent(filteredData, function(d) { return d.date; }));
+
+    y.domain([
+      d3.min(languages, function(c) { return d3.min(c.values, function(v) { return v.status; }); }),
+      d3.max(languages, function(c) { return d3.max(c.values, function(v) { return v.status; }); })
+    ]);
+
+    console.log()
+
+
+    var city = d3.selectAll(".city")
+        .data(languages).enter();
+
+    var lines = d3.selectAll(".line")
+        .data(languages).enter();
+
+    var svg = d3.select("body").transition();
+
+      svg.select(".x.axis") // change the x axis
+        .duration(750)
+        .call(xAxis);
+      svg.select(".y.axis") // change the y axis
+        .duration(750)
+        .call(yAxis);
+
+        //update the city labels
+        svg.selectAll(".city").attr("d", function(d){console.log(d);});
+
+        //update the graph
+      svg.selectAll(".line")
+        .duration(750)
+        .attr("d", function(d,i) {return line(d.values);})
+        .style("stroke", function(d) { return color(d.name); });
+
+  }
+
+});
+
+
+
+
+
+</script>
