@@ -1,3 +1,11 @@
-Language	Comments	Shares	Posts
-English	10	20	30
-Korean	20	30	40
+date	Language	Comments	Shares	Posts
+201110	English	1	2	3
+201110	Korean	20	30	40
+201111	English	30	20	10
+201111	Korean	2	3	4
+201112	English	50	100	150
+201112	Korean	2	25	4
+201201	English	4	20	30
+201201	Korean	17	30	20
+201202	English	40	20	30
+201202	Korean	0	30	20

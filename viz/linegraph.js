@@ -88,18 +88,16 @@ var parseDate = d3.time.format("%Y%m").parse,
       .style("stroke", function(d) { return color(d.name); })
       .on("mouseover", function(d) { 
       //update the month section
-        d3.selectAll("circle").style("fill", "red");
 
         var x0 = x.invert(d3.mouse(this)[0]),
                 i = bisectDate(data, x0, 1),
                 d0 = data[i - 1],
                 d1 = data[i],
                 d = x0 - d0.date > d1.date - x0 ? d1 : d0; //d = the object closest to it
-        d3.selectAll(".month").text(monthNames[d.date.getMonth()]);
+        d3.selectAll(".month").text(monthNames[d.date.getMonth()] + " " + d.date.getFullYear());
       })
-      //.on("mouseout", function() { focus.style("display", "none"); })
       .on("mousedown", function() {
-    console.log({"x": d3.event.x, "y": d3.event.y});
+        console.log({"x": d3.event.x, "y": d3.event.y});
       });
 
 
@@ -115,9 +113,7 @@ var parseDate = d3.time.format("%Y%m").parse,
 
 
 
- d3.selectAll(".line").on("click", function(d, i){
-                                    console.log(d);
-                                });
+ d3.selectAll(".line").on("click", function(d, i){   console.log(d);             });
 
   d3.selectAll("input").on("change", change);
 
@@ -128,12 +124,12 @@ var parseDate = d3.time.format("%Y%m").parse,
 
     //update languages
     languages = color.domain().map(function(name) {
-    return {
-      name: name,
-      values: filteredData.map(function(d) {
-        return {date: d.date, status: +d[name]};
-      })
-    };
+      return {
+        name: name,
+        values: filteredData.map(function(d) {
+          return {date: d.date, status: +d[name]};
+        })
+      };
     });
 
 
@@ -169,6 +165,7 @@ var parseDate = d3.time.format("%Y%m").parse,
         .attr("d", function(d,i) {return line(d.values);})
         .style("stroke", function(d) { return color(d.name); });
 
-  }
+  } //end of change
+
 
 });
