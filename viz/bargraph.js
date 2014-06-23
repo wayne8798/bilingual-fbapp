@@ -1,8 +1,13 @@
+var margin2 = {top: 20, right: 20, bottom: 30, left: 40},
+    width2 = 400 - margin2.left - margin2.right,
+    height2 = 400 - margin2.top - margin2.bottom;
+
+
 var x2 = d3.scale.ordinal()
-    .rangeRoundBands([0, 300], .1);
+    .rangeRoundBands([0, width2], .1);
 
 var y2 = d3.scale.linear()
-    .rangeRound([300, 0]);
+    .rangeRound([height2, 0]);
 
 var color2 = d3.scale.ordinal()
     .range(["#00abc5", "#6b486b",  "#ff8c00"]);
@@ -18,11 +23,11 @@ var yAxis2 = d3.svg.axis()
 
 var barSVG = d3.select("#viz")
         .append("svg")
-    .attr("width", 350)
-    .attr("height", 300);    
-
-    barSVG.append("g")
-    .attr("transform", "translate( 10,10)");
+    .attr("width", width2 + margin2.left + margin2.right)
+    .attr("height", height2 + margin2.top + margin2.bottom)  
+    //.attr("height", 500)
+    .append("g")
+    .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 
 
 d3.tsv("barData.tsv", function(error, data) {
@@ -40,7 +45,7 @@ d3.tsv("barData.tsv", function(error, data) {
 
   barSVG.append("g")
       .attr("class", "x2 axis2")
-      .attr("transform", "translate(0, 300)")
+      .attr("transform", "translate(0," + height2 + ")")
       .call(xAxis2);
 
   barSVG.append("g")
