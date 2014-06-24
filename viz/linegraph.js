@@ -77,18 +77,16 @@ var parseDate = d3.time.format("%Y%m").parse,
       .style("text-anchor", "end")
       .text("Number of updates");
 
-  var city = svg.selectAll(".city")
+  var language = svg.selectAll(".language")
       .data(languages)
     .enter().append("g")
-      .attr("class", "city");
+      .attr("class", "language");
 
-  city.append("path")
+  var path = language.append("path")
       .attr("class", "line")
       .attr("d", function(d) { return line(d.values); })
       .style("stroke", function(d) { return color(d.name); })
       .on("mouseover", function(d) { 
-      //update the month section
-
         var x0 = x.invert(d3.mouse(this)[0]),
                 i = bisectDate(data, x0, 1),
                 d0 = data[i - 1],
@@ -101,9 +99,20 @@ var parseDate = d3.time.format("%Y%m").parse,
       });
 
 
+  language.append("g").selectAll(".dot")
+      .data(function(d) {return d.values})
+      .enter().append("circle")
+      .attr("class", "circle")
+      .attr("cx", function(d){ return x(d.date);})
+      .attr("cy", function(d){ return y(d.status);})
+      .attr("r", function(d){ return 5;})
+      .attr("stroke", function (d) {
+          return color(this.parentNode.__data__.name)
+      })
+      .attr("fill", "white").attr("fill-opacity", .5)
+      .attr("stroke-width", 2);
 
-
-  city.append("text")
+  language.append("text")
       .attr("class", "desc")
       .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; })
       .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.status) + ")"; })
@@ -113,7 +122,7 @@ var parseDate = d3.time.format("%Y%m").parse,
 
 
 
- d3.selectAll(".line").on("click", function(d, i){   console.log(d);             });
+ d3.selectAll(".line").on("click", function(d, i){   console.log(d);  });
 
   d3.selectAll("input").on("change", change);
 
@@ -141,8 +150,9 @@ var parseDate = d3.time.format("%Y%m").parse,
     ]);
 
     //update data for all the elements
-    d3.selectAll(".city").data(languages).enter();
+    var language = d3.selectAll(".language").data(languages).enter();
     d3.selectAll(".line").data(languages).enter();
+   // d3.selectAll("circle").data(languages.values).enter();
     d3.selectAll(".desc").data(languages).enter();
 
     var svg = d3.select("body").transition();
@@ -162,8 +172,13 @@ var parseDate = d3.time.format("%Y%m").parse,
         //update the graph
       svg.selectAll(".line")
         .duration(750)
-        .attr("d", function(d,i) {return line(d.values);})
+        .attr("d", function(d,i) { return line(d.values);})
         .style("stroke", function(d) { return color(d.name); });
+
+      svg.selectAll(".circle")
+        .duration(750)
+        .attr("cx", function(d){ console.log(d); return 200;})
+        .attr("cy", function(d){ return 200;});
 
   } //end of change
 
