@@ -126,6 +126,21 @@ d3.tsv("barData.tsv", function(error, data) {
       })
 
 
+    svg.selectAll(".circle")
+      .on("mousedown", function (){
+        console.log("clicked circle");
+        var x0 = x.invert(d3.mouse(this)[0]),
+                i = bisectDate(data, x0, 1),
+                d0 = data[i - 1],
+                d1 = data[i],
+                d = x0 - d0.date > d1.date - x0 ? d1 : d0; //d = the object closest to it
+        newYear = d.date.getFullYear();
+        newMonth = d.date.getMonth();
+        changeBargraph(newYear, newMonth);
+        d3.selectAll(".month").text(monthNames[d.date.getMonth()] + " " + d.date.getFullYear());
+        //this.parentNode.__data__.name
+      })
+
 function changeBargraph(newYear, newMonth) {
   // clearTimeout(timeout);
   filteredData = data.filter(function(d, i){ return ((d.date).getFullYear() == newYear && (d.date).getMonth() == newMonth); }); //refilter the data for the updated year
