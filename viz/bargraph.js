@@ -128,7 +128,7 @@ d3.tsv("barData.tsv", function(error, data) {
 
     svg.selectAll(".circle")
       .on("mousedown", function (){
-        console.log("clicked circle");
+        //console.log("clicked circle");
         var x0 = x.invert(d3.mouse(this)[0]),
                 i = bisectDate(data, x0, 1),
                 d0 = data[i - 1],

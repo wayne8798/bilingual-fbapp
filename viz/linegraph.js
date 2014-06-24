@@ -36,15 +36,14 @@ var svg = d3.select("#one").append("svg")
 
 d3.tsv("data.tsv", function(error, data) {
 
-var parseDate = d3.time.format("%Y%m").parse,
-    bisectDate = d3.bisector(function(d) { return d.date; }).left;
+  var parseDate = d3.time.format("%Y%m").parse,
+      bisectDate = d3.bisector(function(d) { return d.date; }).left;
 
   color.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }));
-  //filtering data to one year
+
+  //filtering data to one year and parse date for each item
   filteredData = data.filter(function(d, i){ return parseDate(d.date).getFullYear() == currentYear; });
-  data.forEach(function(d) {
-    d.date = parseDate(d.date);
-  });
+  data.forEach(function(d) { d.date = parseDate(d.date);  });
 
   var languages = color.domain().map(function(name) {
     return {
@@ -99,8 +98,8 @@ var parseDate = d3.time.format("%Y%m").parse,
       });
 
 
-  language.append("g").selectAll(".dot")
-      .data(function(d) {return d.values})
+  language.append("g").attr("class", "dot").selectAll(".dot")
+      .data(function(d) {console.log(d); return d.values})
       .enter().append("circle")
       .attr("class", "circle")
       .attr("cx", function(d){ return x(d.date);})
@@ -141,7 +140,6 @@ var parseDate = d3.time.format("%Y%m").parse,
       };
     });
 
-
     x.domain(d3.extent(filteredData, function(d) { return d.date; }));
 
     y.domain([
@@ -154,6 +152,11 @@ var parseDate = d3.time.format("%Y%m").parse,
     d3.selectAll(".line").data(languages).enter();
    // d3.selectAll("circle").data(languages.values).enter();
     d3.selectAll(".desc").data(languages).enter();
+
+    var circles = d3.selectAll(".dot")
+      .data(function(d) { return d})
+
+
 
     var svg = d3.select("body").transition();
 
@@ -175,11 +178,12 @@ var parseDate = d3.time.format("%Y%m").parse,
         .attr("d", function(d,i) { return line(d.values);})
         .style("stroke", function(d) { return color(d.name); });
 
+/*
       svg.selectAll(".circle")
         .duration(750)
-        .attr("cx", function(d){ console.log(d); return 200;})
+        .attr("cx", function(d){  console.log(d); return 200;})
         .attr("cy", function(d){ return 200;});
-
+*/
   } //end of change
 
 
