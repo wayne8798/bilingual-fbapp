@@ -28,6 +28,7 @@ var line = d3.svg.line()
     .x(function(d) { return x(d.date); })
     .y(function(d) { return y(d.status); });
 
+
 var svg = d3.select("#one").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
@@ -41,9 +42,23 @@ d3.tsv("data.tsv", function(error, data) {
 
   color.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }));
 
+
+  var uniqueYears = [];
+
   //filtering data to one year and parse date for each item
   filteredData = data.filter(function(d, i){ return parseDate(d.date).getFullYear() == currentYear; });
-  data.forEach(function(d) { d.date = parseDate(d.date);  });
+  data.forEach(function(d) { 
+    d.date = parseDate(d.date);
+    uniqueYears.push(d.date.getFullYear());
+  });
+
+
+  uniqueYears = d3.set(uniqueYears).values();
+  console.log(uniqueYears);
+  d3.select("#years")
+    .data(uniqueYears)
+    .enter().append("year");
+
 
   var languages = color.domain().map(function(name) {
     return {
@@ -99,7 +114,7 @@ d3.tsv("data.tsv", function(error, data) {
 
 
   language.append("g").attr("class", "dot").selectAll(".dot")
-      .data(function(d) {console.log(d); return d.values})
+      .data(function(d) {return d.values})
       .enter().append("circle")
       .attr("class", "circle")
       .attr("cx", function(d){ return x(d.date);})
@@ -153,10 +168,11 @@ d3.tsv("data.tsv", function(error, data) {
    // d3.selectAll("circle").data(languages.values).enter();
     d3.selectAll(".desc").data(languages).enter();
 
-    var circles = d3.selectAll(".dot")
-      .data(function(d) { return d})
 
 
+
+  d3.select("#one").selectAll(".language").selectAll(".circle")
+      .data(function(d) {return d.values});
 
     var svg = d3.select("body").transition();
 
@@ -178,12 +194,12 @@ d3.tsv("data.tsv", function(error, data) {
         .attr("d", function(d,i) { return line(d.values);})
         .style("stroke", function(d) { return color(d.name); });
 
-/*
+
       svg.selectAll(".circle")
         .duration(750)
-        .attr("cx", function(d){  console.log(d); return 200;})
-        .attr("cy", function(d){ return 200;});
-*/
+      .attr("cx", function(d){ return x(d.date);})
+      .attr("cy", function(d){ return y(d.status);})
+
   } //end of change
 
 
