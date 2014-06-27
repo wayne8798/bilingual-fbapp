@@ -11,6 +11,18 @@ analyse = function(url) {
   return res;
 };
 
+function audienceQ(answer){
+
+	var remAudience = document.getElementById('rememberAudience');
+	if (answer == 1){
+	 	remAudience.style.visibility = 'visible';
+	 	remAudience.style.height = '150px';
+ 	}else{
+	 	remAudience.style.visibility = 'hidden';
+	 	remAudience.style.height = '0px';
+ 	}
+}
+
 params = analyse(window.location.hash);
 window.onload = function(){
 	//change contents based on the postNo - contents and language
@@ -22,6 +34,7 @@ window.onload = function(){
 	var txtFile = new XMLHttpRequest();
 	var filename = "post" + params.post + ".txt";
 	txtFile.open("GET", filename, true);
+	console.log("test");
 	txtFile.onreadystatechange = function() {
 	  if (txtFile.readyState === 4) {  // Makes sure the document is ready to parse.
 	    if (txtFile.status === 200) {  // Makes sure it's found the file.
@@ -30,16 +43,34 @@ window.onload = function(){
 			
 			//change the language mentioned in Q4 depending on language of the post
 			document.getElementById("Q4").innerHTML = "4. Why did you write this post in " + lines[0] +"?";
-			var input = $('#appropriate');
+			var appropriate = $('#reasonAppropriate');
 		    newText = lines[0] + " is more appropriate for expressing the content";
-		    input[0].nextSibling.nodeValue = newText;
+		    appropriate[0].nextSibling.nodeValue = newText;
+
+			if (lines[0].indexOf("Korean") > -1){
+				var know = $('#reasonKnow');
+			    newText = "Didn't know the terms/appropriate expression in English";
+			    know[0].nextSibling.nodeValue = newText;
+
+		    	var translateQ = document.getElementById("translate");
+		    	translateQ.style.visibility = 'visible';
+		    	translateQ.style.height = '80px';
+
+
+		    	var audienceText = document.getElementById("Q3c").innerHTML;
+		    	var newText = audienceText.replace("English", "Korean");
+		    	document.getElementById("Q3c").innerHTML = newText;
+		    } else {
+		console.log("not Korean?");
+		console.log(lines[0]);
+		}
 	    }
 	  }
+
 	}
 	txtFile.send(null);
 
 
 };
-
 
 

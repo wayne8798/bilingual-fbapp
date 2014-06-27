@@ -20,28 +20,55 @@
         <img src="samplePost.jpg" height="400pt">
     </div>
     <div style="float:right; width:50%; font-size: 9pt"><br>
-        <form method="post" action="status.php">
+        <form id ="questions" method="post" action="page2.php">
         <p style="margin-top:12pt;">1. Do you remember posting this message?</p>
         <input type="radio" value="Yes" name="Q1">Yes<br/>
-        <input type="radio" value="No" name="Q1">No<br/><br>
+        <input type="radio" value="No" name="Q1">No<br/>
+        <input type="radio" value="Didnot" name="Q1">I didn't write this post<br/>
+        <br>
 
         <p>2. Do you remember the intended audience?<br></p>
-        <input type="radio" value="Yes" name="Q2">Yes<br/>
-        <input type="radio" value="No" name="Q2">No<br/><br/>
+        <input type="radio" value="Yes" name="Q2" onClick="audienceQ(1)">Yes<br/>
+        <input type="radio" value="No" name="Q2" onClick="audienceQ(0)">No<br/><br/>
+
 
         <p>3. If so, who were they? (Select all that apply)<br/></p>
         <input type="checkbox" value="family" name="audience[]">Family<br />
-        <input type="checkbox" value="work" name="audience[]">Work<br />
+        <input type="checkbox" value="work" name="audience[]">Work (ex. classmate, professor, collegue, teammate)<br />
         <input type="checkbox" value="friends" name="audience[]">Friends<br />
+        <input type="checkbox" value="hobby" name="audience[]">Hobby (ex. school clubs, online communities)<br />
+        <input type="checkbox" value="neighbor" name="audience[]">Neighbor (ex. local community, roommate)<br />
+        <input type="checkbox" value="religious" name="audience[]">Religious (ex. church friends)<br />
+        <input type="checkbox" value="everyone" name="audience[]">Everyone<br />               
         <input type="checkbox" value="other" name="audience[]">Other<br />
+
         <input type="text" name="audienceOther" class="otherBox"><br><br />
 
+
+        <div id="rememberAudience" style="visibility: hidden; height: 0">
+        <p id="Q3b">3b. Would you mind if people who weren’t your intended audience saw the message?<br></p>
+        <input type="radio" value="Yes" name="Q2b">Yes (I would prefer only my intended audience to see this post)<br/>
+        <input type="radio" value="No" name="Q2b">No (I am fine with everyone seeing this post)<br/><br>
+        
+
+        <p id="Q3c">3c. On the scale from 1 to 5, how obligated did you feel to write in English for this audience? <br><br>(1 = I didn’t feel obligated at all, 5 = I felt strongly obligated)</p>
+        <input type="text" name="obligated" class="otherBox"><br><br><br>
+        </div>
+
         <p id="Q4">4. Why did you write this post in English?<br/></p>
-        <input type="checkbox" id ="appropriate" value="appropriate" name="langChoice[]">English is more appropriate for expressing the content<br />
+        <input type="checkbox" id ="reasonAppropriate" value="appropriate" name="langChoice[]">English is more appropriate for expressing the content<br />
         <input type="checkbox" value="audience" name="langChoice[]">To address a specific audience<br />
         <input type="checkbox" value="quote" name="langChoice[]">To quote something<br />
+        <input type="checkbox" value="habitual" name="langChoice[]">Habitual Expressions (ex. greetings)<br />
+        <input type="checkbox" id="reasonKnow" value="knowledge" name="langChoice[]">Didn't know the terms/appropriate expression in Korean<br />
         <input type="checkbox" value="other" name="langChoice[]">Other<br />
         <input type="text" name="langOther" class="otherBox"><br><br><br>
+
+        <div id="translate" style="visibility: hidden; height: 0">
+        <p id="Q5">5. How comfortable would you feel if your American friend read this post using the translation tool on Facebook?<br/>(1 = Very Uncomfortable, 5 = Very Comfortable)</p>
+        <input type="text" name="Q5" class="otherBox"><br><br><br>
+        </div>
+
         <input type="hidden" id="postNo" name="postNo" value="1">
         <input type="submit" value="next" name="submit" style="margin-left:30%">
         </form>
