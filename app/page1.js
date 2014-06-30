@@ -21,7 +21,7 @@ function getStatus() {
 				data: { 
 				statusList: statusList
 			},
-			url: 'part1.php',
+			url: 'page1.php',
 			dataType: 'json',
 			async: false,
 

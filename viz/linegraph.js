@@ -52,12 +52,26 @@ d3.tsv("data.tsv", function(error, data) {
     uniqueYears.push(d.date.getFullYear());
   });
 
-
+  //find out the unique years and add a radio button for each year
   uniqueYears = d3.set(uniqueYears).values();
   console.log(uniqueYears);
-  d3.select("#years")
-    .data(uniqueYears)
-    .enter().append("year");
+  var years = d3.select("#years").selectAll("label")
+    .data(uniqueYears)    
+    .enter().append("label");
+
+  years.append("input")
+  .attr({
+        type: "radio",
+        class: "shape",
+        name: "mode",
+        value: function(d, i) {return d;}
+    })
+  .property("checked", function(d, i) { 
+        return (i===0); 
+    });
+
+  years.append("label").text(function(d) {return d;});
+
 
 
   var languages = color.domain().map(function(name) {
@@ -100,14 +114,6 @@ d3.tsv("data.tsv", function(error, data) {
       .attr("class", "line")
       .attr("d", function(d) { return line(d.values); })
       .style("stroke", function(d) { return color(d.name); })
-      .on("mouseover", function(d) { 
-        var x0 = x.invert(d3.mouse(this)[0]),
-                i = bisectDate(data, x0, 1),
-                d0 = data[i - 1],
-                d1 = data[i],
-                d = x0 - d0.date > d1.date - x0 ? d1 : d0; //d = the object closest to it
-        d3.selectAll(".month").text(monthNames[d.date.getMonth()] + " " + d.date.getFullYear());
-      })
       .on("mousedown", function() {
         console.log({"x": d3.event.x, "y": d3.event.y});
       });
