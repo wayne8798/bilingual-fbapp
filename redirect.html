@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script type="text/javascript">
+	function redirect() {
+		window.location = "http://www.google.com/#q=" +
+			document.getElementById("number").value;
+	}
+	</script>
+</head>
+<body>
+	<input type="text" id="number">
+	<button type="button" onclick="redirect()">Redirect</button>
+</body>
+</html>
