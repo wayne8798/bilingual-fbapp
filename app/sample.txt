@@ -1,0 +1,12 @@
+        <h2 id="scenarioNo">Sample Scenario</h2>
+       <p id="scenario">You went to the beach today.<br>Write a post to tell your friends on Facebook about your day.</p>
+        <p id="scenarioL1">당신은 방금 해변가에서 놀다 집에 돌아왔습니다<br>
+        오늘 한 일에 대한 글을 페북에 포스팅해보세요</p>
+
+
+       <p id="scenario">I went to the beach today, and it was great!:)<br>Wish the weather was always this nice</p>
+       <p>OR</p>
+        <p id="scenarioL1">오늘 해변가에 놀러갔는데 날씨도 좋고 기분 완전 좋음 ^0^<br>
+        학교에서 멀지만 않으면 더 자주 갈텐데...</p>
+
+        need to change Korean post in page1.js as well
