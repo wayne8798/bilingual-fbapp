@@ -8,12 +8,12 @@ var scenarios = ["Sample Scenario","Today is Chinese/Korean New Year. <br>Write 
 "You just got back from your 3 days trip to New York.<br> Write a post describing the photos that you took <br>(Statue of Liberty, Wall Street Charging Bull, Times Square).",
 "Yesterday was your birthday and lots of people posted greetings on your wall.<br> Write a post to thank everyone."];
 
-var scenariosKor = ["오늘 해변가에 놀러갔는데 날씨도 좋고 기분 완전 좋음 ^0^<br> 학교에서 멀지만 않으면 더 자주 갈텐데...","오늘은 설날(구정)입니다. <br>페이스북 친구들을 위한 새해인사 글을 페이스북에 포스팅해보세요.", 
-"당신은 친구집에 저녁 초대를 받았고 친구가 만든 음식은 정말로 맛있었습니다. <br>음식사진과 함께 페이스북에 올릴 글을 포스팅해보세요.",
-"당신은 방금 기말 과제팀에 배정 받았습니다. <br>이번주 토요일 오후 2시에 팀회의 하자는 글을 페이스북에 포스팅해보세요.",
+var scenariosKor = ["당신은 방금 해변가에서 놀다 집에 돌아왔습니다<br>오늘 한 일에 대한 글을 페북에 포스팅해보세요<br><br> <hr style=\"width: 80%;\">Below are the sample posts to this scenario. <br>You can likewise add more details to the scenario if you wish.","오늘은 설날(구정)입니다. <br>페이스북 친구들을 위한 새해인사 글을 포스팅해보세요.", 
+"저녁초대 받아서 간 친구집에서 먹었던 음식은 정말로 맛있었습니다. <br>음식사진과 함께 페이스북에 올릴 글을 포스팅해보세요.",
+"당신은 방금 기말 프로젝트 그룹에 배정 받았습니다. <br>이번주 토요일 오후 2시에 그룹회의 하자는 글을 페이스북에 포스팅해보세요.",
 "오늘 교수님이 수업시간 도중에 ‘Let it Go’를 부르셨습니다.<br> 이에 대한 글을 페이스북에 포스팅해보세요.",
-"당신은 이제 졸업하게 되어 자동차 (Ford Fusion, 2009, 남색, 35000 마일) 를 팔려고 합니다.<br> 페이스북에 광고하는 글을 포스팅해보세요.",
-"오늘은 크리스마스입니다.<br> 페이스북 친구들을 위한 글을 포스팅해주세요.",
+"졸업을 앞두고 있는 당신은 자동차 (Ford Fusion, 2009, 남색, 35000 마일) 를 팔고자 합니다.<br> 페이스북에 광고하는 글을 포스팅해보세요.",
+"오늘은 크리스마스입니다.<br> 페이스북 친구들에게 크리스마스 인사글을 포스팅해주세요.",
 "당신은 방금 뉴욕 2박3일 여행에서 돌아왔습니다.<br> 아래의 사진들과 함께 올릴만한 글을 포스팅해주세요 (자유의 여신상, 월스트릿 황소동상, 타임스 스퀘어).",
 "어제는 당신의 생일이였습니다.<br> 생일 축하글을 남긴 많은 사람들을 위한 감사글을 포스팅해주세요."];
 

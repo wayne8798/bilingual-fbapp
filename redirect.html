@@ -1,6 +1,13 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
+	<meta charset="UTF-8">
+	<title>FB app</title>
+	<style>
+	div {font-family:"lucida grande",tahoma,verdana,arial,sans-serif}
+	.box {width: 304pt; padding:2pt; background-color: #E9EAED; }
+	</style>
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script type="text/javascript">
 	function redirect() {
@@ -10,14 +17,26 @@
 	}
 	</script>
 </head>
-<body>
-	
+<body style="margin:0;" onload="javascript:changeLang()">
+
+	<div  style="background-color:#3B5998; color: white; height:50pt"><p>Languange Choices of Bilingual Users on Facebook</p></div>
+    <div style="width:100%; text-align:center"> 
+
+	<h2>Instructions</h2>
+	<p >You will be given 1 sample scenario and 8 actual scenarios to write about. <br>For each scenario, write a post in the textbox that says 'Enter text here' and click 'Post'. <br></p>
+	<img src="post.jpg" width="400pt">	
+	<p>You may write in whatever language you prefer (English, Chinese, Korean, or a mix of languages).<br> These posts will NOT be published on Facebook.<br></p>
+	</div>
+    <div style="margin-left: 30%; width:40%"> 
+	<h2 style="text-align:center">Getting Started</h2>
+
 	<p>Enter your reference code:<br></p>
 	<input type="text" id="number">
 
-	<p>Choose one of the following:<br></p>
+	<p>Are you a Chinese-English bilingual or a Korean-English bilingual?<br></p>
 	<input type="radio" value="Chinese" name="lang">Chinese-English bilingual<br/>
 	<input type="radio" value="Korean" name="lang">Korean-English bilingual<br/><br/>
-	<button type="button" onclick="redirect()">Redirect</button>
+	<button type="button" onclick="redirect()">Start</button>
+	</div>
 </body>
 </html>
