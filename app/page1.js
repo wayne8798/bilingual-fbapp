@@ -78,7 +78,7 @@ function getStatus() {
 		url: 'page1.php',
 		dataType: 'json',
 		async: false,
-었
+
 		success: function(result){
 		// call the function that handles the response/results
 		},
@@ -96,7 +96,7 @@ function getStatus() {
 
     if (statusNo >= scenarios.length){
 
-		location.href = "page2.html#post=1";
+		location.href = "page3.html";
     }
 
 }
