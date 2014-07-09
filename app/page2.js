@@ -23,6 +23,11 @@ function audienceQ(answer){
  	}
 }
 
+function updateSlider(questionNo, slideAmount) {
+	var currentValue = document.getElementById("currentValueQ" + questionNo);
+	currentValue.innerHTML= slideAmount;
+}
+
 params = analyse(window.location.hash);
 window.onload = function(){
 	//change contents based on the postNo - contents and language

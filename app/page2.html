@@ -40,7 +40,7 @@
         <input type="checkbox" value="neighbor" name="audience[]">Neighbor (ex. local community, roommate)<br />
         <input type="checkbox" value="religious" name="audience[]">Religious (ex. church friends)<br />
         <input type="checkbox" value="everyone" name="audience[]">Everyone<br />               
-        <input type="checkbox" value="other" name="audience[]">Other<br />
+        <input type="checkbox" value="other" name="audience[]">Other (please state below)<br />
 
         <input type="text" name="audienceOther" class="otherBox"><br><br />
 
@@ -52,7 +52,9 @@
         
 
         <p id="Q3c">3c. On the scale from 1 to 5, how obligated did you feel to write in English for this audience? <br><br>(1 = I didn’t feel obligated at all, 5 = I felt strongly obligated)</p>
-        <input type="text" name="obligated" class="otherBox"><br><br><br>
+
+        1 <input id="slide" name="obligated"  type="range" min="1" max="5" step="1" value="3" onchange="updateSlider(3, this.value)"/>5 
+        <div style="margin-left: 10%"> <span id="currentValueQ3">3</span><br><br><br>    </div>
         </div>
 
         <p id="Q4">4. Why did you write this post in English?<br/></p>
@@ -61,12 +63,13 @@
         <input type="checkbox" value="quote" name="langChoice[]">To quote something<br />
         <input type="checkbox" value="habitual" name="langChoice[]">Habitual Expressions (ex. greetings)<br />
         <input type="checkbox" id="reasonKnow" value="knowledge" name="langChoice[]">Didn't know the terms/appropriate expression in Korean<br />
-        <input type="checkbox" value="other" name="langChoice[]">Other<br />
+        <input type="checkbox" value="other" name="langChoice[]">Other (please state below)<br />
         <input type="text" name="langOther" class="otherBox"><br><br><br>
 
         <div id="translate" style="visibility: hidden; height: 0">
         <p id="Q5">5. How comfortable would you feel if your American friend read this post using the translation tool on Facebook?<br/>(1 = Very Uncomfortable, 5 = Very Comfortable)</p>
-        <input type="text" name="Q5" class="otherBox"><br><br><br>
+        1 <input id="slide" name="comfortable"  type="range" min="1" max="5" step="1" value="3" onchange="updateSlider(5, this.value)"/>5 
+        <div style="margin-left: 10%"> <span id="currentValueQ5">3</span><br><br><br>    </div>
         </div>
 
         <input type="hidden" id="postNo" name="postNo" value="1">

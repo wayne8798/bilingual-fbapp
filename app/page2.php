@@ -2,10 +2,10 @@
 $Q1 = $_POST["Q1"];
 $Q2 = $_POST["Q2"];
 $Q3b = $_POST["Q3b"];
-$Q5 = $_POST["Q5"];
 $audience = $_POST["audience"];
 $audienceOther = $_POST["audienceOther"];
 $obligated = $_POST["obligated"];
+$comfortable = $_POST["comfortable"];
 $langChoice = $_POST["langChoice"];
 $langOther = $_POST["langOther"];
 $postNo = $_POST["postNo"];
@@ -34,7 +34,7 @@ if ($langChoice){
 	}
 }
 $posts .= $langOther." \n";
-$posts .= "5. How comfortable would you feel if your American friend read this post using the translation tool on Facebook? ".$Q5." \n";
+$posts .= "5. How comfortable would you feel if your American friend read this post using the translation tool on Facebook? ".$comfortable." \n";
 
 // Add data to top of the file
 file_put_contents("page2.txt", $posts, FILE_APPEND);
@@ -42,7 +42,7 @@ file_put_contents("page2.txt", $posts, FILE_APPEND);
 //redirect
 //if the last post
 if ((int)$postNo > 2){
-	header('Location: ' . "page3.html");
+	header('Location: ' . "../viz/index.html");
 } else {
 $url = 'page2.html#post=' . (string)((int)$postNo + 1);
 header('Location: ' . $url);
