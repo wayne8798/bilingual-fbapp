@@ -15,7 +15,7 @@ var scenariosKor = ["당신은 방금 해변가에서 놀다 집에 돌아왔습
 "졸업을 앞두고 있는 당신은 자동차 (Ford Fusion, 2009, 남색, 35000 마일) 를 팔고자 합니다.<br> 아래사진은 당신의 차 사진입니다. 이 사진과 연관된 광고글을 포스팅해보세요.",
 "오늘은 크리스마스입니다.<br> 페이스북 친구들에게 크리스마스 인사글을 포스팅해주세요.",
 "당신은 방금 뉴욕 2박3일 여행에서 돌아왔습니다.<br> 여행에서 자유의 여신상과 월가 황소동상도 보고 타임스퀘어에서 아래의 사진도 찍었습니다. <br>이 사진과 같이 올릴 글을 포스팅해주세요.",
-"어제는 당신의 생일이습니다.<br> 생일 축하글을 남긴 사람들에 감사글을 포스팅해주세요."];
+"어제는 당신의 생일이었고 많은 사람들이 페이스북에 축하글을 남겼습니.<br> 생일 축하글을 남긴 사람들에게 감사글을 포스팅해주세요."];
 
 var scenariosChi = ["​今天你去海边沙滩上玩了一天，刚刚回家。请就今天的经历发表一条状态<br><br> <hr style=\"width: 80%;\">Below are the sample posts to this scenario. <br>You can likewise add more details to the scenario if you wish.","今天是农历春节。请发表一个状态祝你在Facebook上的朋友们新年快乐。", 
 "你刚刚去朋友家品尝了他/她做的美食。请发表一个与配图相关的状态。",
@@ -26,6 +26,14 @@ var scenariosChi = ["​今天你去海边沙滩上玩了一天，刚刚回家�
 "你刚刚去纽约市玩了三天。请发表一条状态介绍一下你拍的一些照片（自由女神像，华尔街金牛，时代广场）。",
 "昨天是你的生日，很多朋友都在你的墙上发表了生日祝福。请写一个状态感谢大家的祝福。"];
 
+
+
+shuffle = function(v){
+    for(var j, x, i = v.length; i; j = parseInt(Math.random() * i), x = v[--i], v[i] = v[j], v[j] = x);
+    return v;
+};
+
+var randomOrder = shuffle([1, 2, 3, 4, 5, 6, 7, 8]);
 
 
 analyse = function(url) {
@@ -48,17 +56,21 @@ console.log(L1);
 
 function changeLang() {
 
+
 if (L1.indexOf("Korean") > -1)
 	document.getElementById("scenarioL1").innerHTML = scenariosKor[statusNo];
 else
-	document.getElementById("scenarioL1").innerHTML = scenariosChi[statusNo ];
+	document.getElementById("scenarioL1").innerHTML = scenariosChi[statusNo];
 }
 
 function getStatus() {
     var status = document.getElementById("status").value + "\n";
     statusNo += 1;
+    realStatusNo = statusNo; //store the real status number
+
+    statusNo = randomOrder[statusNo -1]; //choose a random scenario
 	document.getElementById("status").value = ""
-	document.getElementById("scenarioNo").innerHTML = "Scenario " + statusNo.toString();
+	document.getElementById("scenarioNo").innerHTML = "Scenario " + realStatusNo.toString();
 	document.getElementById("scenario").innerHTML = scenarios[statusNo] ;
 
 	if (L1.indexOf("Korean") > -1)
@@ -100,10 +112,9 @@ function getStatus() {
 			alert('no statuslist');
 		}
 
-		console.log(statusNo);
+	statusNo = realStatusNo;
 
     if (statusNo >= scenarios.length){
-
 		location.href = "page3.html";
     }
 

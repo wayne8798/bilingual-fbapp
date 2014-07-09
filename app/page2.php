@@ -8,18 +8,20 @@ $obligated = $_POST["obligated"];
 $comfortable = $_POST["comfortable"];
 $langChoice = $_POST["langChoice"];
 $langOther = $_POST["langOther"];
+$langChoiceKorean = $_POST["langChoiceKorean"];
+$langOtherKorean = $_POST["langOtherKorean"];
 $postNo = $_POST["postNo"];
 
 $posts = "\nPost " . $postNo . " \n";
 $posts .= "1. Do you remember posting this message? ".$Q1." \n";
 $posts .= "2. Do you remember the intended audience? ".$Q2." \n";
-
 $posts .= "3. If so, who were they? (Select all that apply) \n";
 if ($audience){
 	foreach ($audience as $a) {
 	$posts .= $a." \n";
 	}
 }
+
 $posts .= $audienceOther." \n";
 
 $posts .= "3b. Would you mind if people who weren’t your intended audience saw the message? ".$Q3b." \n";
@@ -34,6 +36,16 @@ if ($langChoice){
 	}
 }
 $posts .= $langOther." \n";
+
+$posts .= "4b. Why did you write part of this post in Korean?\n";
+
+if ($langChoiceKorean){
+	foreach ($langChoiceKorean as $l) {
+	$posts .= $l."\n";
+	}
+}
+$posts .= $langOtherKorean." \n";
+
 $posts .= "5. How comfortable would you feel if your American friend read this post using the translation tool on Facebook? ".$comfortable." \n";
 
 // Add data to top of the file

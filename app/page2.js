@@ -47,12 +47,13 @@ window.onload = function(){
 			lines = txtFile.responseText.split("\n"); // Will separate each line into an array
 			
 			//change the language mentioned in Q4 depending on language of the post
-			document.getElementById("Q4").innerHTML = "4. Why did you write this post in " + lines[0] +"?";
-			var appropriate = $('#reasonAppropriate');
-		    newText = lines[0] + " is more appropriate for expressing the content";
-		    appropriate[0].nextSibling.nodeValue = newText;
+
 
 			if (lines[0].indexOf("Korean") > -1){
+				document.getElementById("Q4").innerHTML = "4. Why did you write this post in Korean?";
+				var appropriate = $('#reasonAppropriate');
+			    appropriate[0].nextSibling.nodeValue = "Korean is more appropriate for expressing the content";
+
 				var know = $('#reasonKnow');
 			    newText = "Didn't know the terms/appropriate expression in English";
 			    know[0].nextSibling.nodeValue = newText;
@@ -61,14 +62,24 @@ window.onload = function(){
 		    	translateQ.style.visibility = 'visible';
 		    	translateQ.style.height = '80px';
 
-
 		    	var audienceText = document.getElementById("Q3c").innerHTML;
 		    	var newText = audienceText.replace("English", "Korean");
 		    	document.getElementById("Q3c").innerHTML = newText;
-		    } else {
-		console.log("not Korean?");
-		console.log(lines[0]);
-		}
+
+		    } else if (lines[0].indexOf("Both") > -1){
+		    	document.getElementById("Q4").innerHTML = "4a. Why did you write part of this post in English?";
+		    	var bothLang = document.getElementById("bothLang");
+		    	bothLang.style.visibility = 'visible';
+		    	bothLang.style.height = '170px';
+
+		    	var translateQ = document.getElementById("translate");
+		    	translateQ.style.visibility = 'visible';
+		    	translateQ.style.height = '80px';
+
+		    	var audienceText = document.getElementById("Q3c").innerHTML;
+		    	var newText = audienceText.replace("English", "both languages");
+		    	document.getElementById("Q3c").innerHTML = newText;
+			}
 	    }
 	  }
 
