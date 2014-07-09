@@ -26,15 +26,12 @@ var scenariosChi = ["​今天你去海边沙滩上玩了一天，刚刚回家�
 "你刚刚去纽约市玩了三天。请发表一条状态介绍一下你拍的一些照片（自由女神像，华尔街金牛，时代广场）。",
 "昨天是你的生日，很多朋友都在你的墙上发表了生日祝福。请写一个状态感谢大家的祝福。"];
 
-
-
 shuffle = function(v){
     for(var j, x, i = v.length; i; j = parseInt(Math.random() * i), x = v[--i], v[i] = v[j], v[j] = x);
     return v;
 };
 
 var randomOrder = shuffle([1, 2, 3, 4, 5, 6, 7, 8]);
-
 
 analyse = function(url) {
   var paramstring, res;
@@ -52,10 +49,8 @@ analyse = function(url) {
 params = analyse(window.location.hash);
 var L1 = params.lang;
 var refcode = params.refcode;
-console.log(L1);
 
 function changeLang() {
-
 
 if (L1.indexOf("Korean") > -1)
 	document.getElementById("scenarioL1").innerHTML = scenariosKor[statusNo];
