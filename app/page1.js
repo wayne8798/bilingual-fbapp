@@ -77,6 +77,7 @@ function getStatus() {
 
 	if (statusNo == 2 || statusNo == 5 || statusNo == 7 ){
 		scanarioImage.src = "../pics/scenario" + statusNo.toString() + ".jpeg";
+		scenario.width = "400pt";
 		scanarioImage.style.visibility = 'visible';
 	} else{
 		scanarioImage.style.visibility = 'hidden';
