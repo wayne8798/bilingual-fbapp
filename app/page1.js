@@ -5,8 +5,8 @@ var scenarios = ["Sample Scenario","Today is Chinese/Korean New Year. <br>Write 
 "Your professor sang ‘Let it Go’ in the middle of a class today.<br> Write a post about it.",
 "You are graduating, and you want to sell your car<br>(Ford Fusion, 2009, blue, 35000 miles) for $10,000.<br> Below is a picture of your car. Write a post that goes along with the picture to advertise it.",
 "Today is Christmas.<br> Write a post to greet your Facebook friends.",
-"You just got back from your 3 day trip to New York.<br> On that trip, you saw Statue of Liberty and Wall Street Charging Bull, and took this picture of Times Square. Write a post that you will post with this picture.",
-"Yesterday was your birthday and lots of people posted greetings on your wall.<br> Write a post to thank everyone."];
+"You just got back from your 3 day trip to New York.<br> On that trip, you saw the Statue of Liberty and Wall Street Charging Bull, and took this picture of Times Square. Write a post that would go along with the picture you took.",
+"Yesterday was your birthday, and lots of people posted greetings on your wall.<br> Write a post to thank everyone."];
 
 var scenariosKor = ["당신은 방금 해변가에서 놀다 집에 돌아왔습니다.<br>오늘 한 일에 대한 글을 페이북에 포스팅해보세요.<br><br> <hr style=\"width: 80%;\">Below are the sample posts to this scenario. <br>You can likewise add more details to the scenario if you wish.","오늘은 설날(구정)입니다. <br>페이스북 친구들에게 새해인사 글을 포스팅해보세요.", 
 "저녁초대를 받아서 간 친구집에서 먹었던 음식은 정말로 맛있었습니다. <br> 당신이 찍은 음식사진과 함께 페이스북에 올릴 글을 포스팅해보세요.",
