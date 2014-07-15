@@ -89,6 +89,7 @@ function getStatus() {
 			type: 'POST',
 			data: { 
 			statusList: status,
+			statusNo: randomOrder[realStatusNo -2],
 			refcode: refcode
 		},
 		url: 'page1.php',

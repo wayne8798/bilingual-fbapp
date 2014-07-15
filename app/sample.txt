@@ -19,3 +19,9 @@
     </div>
 
 
+        <h2 id="scenarioNo">Sample Posts</h2>
+       <p id="scenario">I went to the beach today, and it was great! :)<br>Wish the weather was always this nice~<br><br>OR<br><br>오늘 해변가에 놀러갔는데 날씨도 좋고 기분 완전 좋음 ^0^<br>
+        학교에서 멀지만 않으면 더 자주 갈텐데...<br><br>OR<br><br>
+        今天去海滩玩了一天，非常爽！ :) 希望天气能一直这么好
+       </p>
+
