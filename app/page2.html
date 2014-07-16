@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>FB app</title>
     <style>
-    div {font-family:"lucida grande",tahoma,verdana,arial,sans-serif}
+    div {font-family:"lucida grande"}
     .box {width: 304pt; padding:2pt; background-color: #E9EAED; }
     .otherBox {width: 35%; margin-left: 3pt;}
     p {margin: 0pt;}
@@ -16,9 +16,27 @@
 
     <div  style="background-color:#3B5998; color: white; height:50pt"><p>Languange Choices of Bilingual Users on Facebook</p></div>
     <div style="width:100%; height:100px;">
-    <div style="float:left; width:50%; text-align:center;"><br>
-        <img src="samplePost.jpg" height="400pt">
+    <div style="float:left; width:50%; "><br>
+        <div style="margin-left:20pt;">
+        <h2 id="type" >type of post</h2>
+        <p>To see the original context of this post, <br>please right-click and Open Link in New Tab:<br><br></p>
+        <a id="original" href="http://www.w3schools.com" target="_blank">Original Post</a> 
     </div>
+        <div id="box" style="border-style:solid; border-color:#E9EAED; border-width: 1pt; margin:10% 15%; height:100pt;" >
+            <div style="margin: 4pt;">
+                <div style="float:left; width:15%;">
+                    <img src="../pics/profile.jpg" height="50pt" >
+                </div>
+            <p style="font-size:10pt; color: #5F8AE4;">Hidy Kong</p>
+            <p id="date" style="font-size:8pt; color: gray;">date</p>
+            </div>
+            <br>
+            <p id="message" style="margin:4pt;">Here is the content of the post</p>
+        </div>
+    </div>
+
+
+
     <div style="float:right; width:50%; font-size: 9pt"><br>
         <form id ="questions" method="post" action="page2.php">
         <p style="margin-top:12pt;">1. Do you remember posting this message?</p>
@@ -54,7 +72,7 @@
         <p id="Q3c">3c. On the scale from 1 to 5, how obligated did you feel to write in English for this audience? <br><br>(1 = I didn’t feel obligated at all, 5 = I felt strongly obligated)</p>
 
         1 <input id="slide" name="obligated"  type="range" min="1" max="5" step="1" value="3" onchange="updateSlider(3, this.value)"/>5 
-        <div style="margin-left: 10%"> <span id="currentValueQ3">3</span><br><br><br>    </div>
+        <div style="margin-left: 11%"> <span id="currentValueQ3">3</span><br><br><br>    </div>
         </div>
 
         <p id="Q4">4. Why did you write this post in English?<br/></p>
@@ -81,13 +99,13 @@
         <div id="translate" style="visibility: hidden; height: 0">
         <p id="Q5">5. How comfortable would you feel if your American friend read this post using the translation tool on Facebook?<br/>(1 = Very Uncomfortable, 5 = Very Comfortable)</p>
         1 <input id="slide" name="comfortable"  type="range" min="1" max="5" step="1" value="3" onchange="updateSlider(5, this.value)"/>5 
-        <div style="margin-left: 10%"> <span id="currentValueQ5">3</span><br><br><br>    </div>
+        <div style="margin-left: 11%"> <span id="currentValueQ5">3</span><br><br><br>    </div>
         </div>
 
-
+        <p></p>
 
         <input type="hidden" id="postNo" name="postNo" value="1">
-        <input type="submit" value="next" name="submit" style="margin-left:30%">
+        <input type="submit" value="next" name="submit" style="margin: 40pt;">
         </form>
     </div>
 </body>
