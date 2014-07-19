@@ -56,7 +56,6 @@ window.onload = function(){
 	 }
 	 document.getElementById("original").href = currentPost.original;
 
-	 console.log(currentPost.date);
     //update the post
 	//change the language mentioned in Q4 depending on language of the post
 
