@@ -1,4 +1,5 @@
 import bs4
+import json
 import random
 
 def monthConvert(m):
@@ -53,9 +54,9 @@ def langCheck(us):
 	else:
 		return 0
 
-def outputData(data):
+def outputData(comments, shares):
 	table_stats = {}
-	for entry in data:
+	for entry in comments:
 		time = entry["time"]
 		text_lang = langCheck(entry["text"])
 		if not time in table_stats.keys():
@@ -104,9 +105,20 @@ def pickComments(data, limit):
 
 
 comments_file = open("comments_test.html", "r")
-comments_data = comments_file.read()
+comments_raw_data = comments_file.read()
 comments_file.close()
 
-clean_data = formatComments(comments_data)
-outputData(clean_data)
-pickComments(clean_data, 2)
+comments_data = formatComments(comments_raw_data)
+
+# shares data retrieved using
+# "SELECT owner_comment, title, created_time, \
+# link_id, url from link WHERE owner = me() \
+# and owner_comment <> "";"
+shares_file = open("shares.json", "r")
+shares_raw_data = shares_file.read()
+shares_file.close()
+
+shares_data = json.loads(shares_raw_data)
+
+outputData(comments_data, shares_data)
+pickComments(comments_data, 2)
