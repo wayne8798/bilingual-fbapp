@@ -1,6 +1,7 @@
 import bs4
 import json
 import random
+import sys
 from time import localtime, strftime
 
 def monthConvert(m):
@@ -64,27 +65,35 @@ def convertTimeStamp(timestamp):
 		month = "0" + month
 	return year + month
 
+def timeCompare(a, b):
+	if int(a[0:4]) == int(b[0:4]):
+		return int(a[4:]) - int(b[4:])
+	else:
+		return int(a[0:4]) - int(b[0:4])
 
 def outputData(comments, shares, status):
 	lang_ls = []
 	for entry in comments:
-		lang_ls.append([entry["time"], langCheck(entry["text"])])
+		lang_ls.append([entry["time"], langCheck(entry["text"]), 0])
 
 	for entry in shares:
 		lang_ls.append([convertTimeStamp(entry["created_time"]), \
-			langCheck(entry["owner_comment"])])
+			langCheck(entry["owner_comment"]), 1])
 
 	for entry in status:
 		lang_ls.append([convertTimeStamp(entry["time"]), \
-			langCheck(entry["message"])])
+			langCheck(entry["message"]), 2])
 
 	table_stats = {}
-	for pair in lang_ls:
-		time = pair[0]
-		text_lang = pair[1]
+	bar_stats = {}
+	for triple in lang_ls:
+		time = triple[0]
+		text_lang = triple[1]
+		source = triple[2]
 
 		if not time in table_stats.keys():
 			table_stats[time] = {'eng': 0, 'other': 0, 'both': 0}
+
 		if text_lang == 0:
 			table_stats[time]['eng'] += 1
 		elif text_lang == 1:
@@ -92,14 +101,36 @@ def outputData(comments, shares, status):
 		else:
 			table_stats[time]['both'] += 1
 
+		if not time in bar_stats.keys():
+			bar_stats[time] = {'eng': [0,0,0], "other": [0,0,0]}
+
+		if text_lang == 0:
+			bar_stats[time]["eng"][source] += 1
+		elif text_lang == 1:
+			bar_stats[time]["other"][source] += 1
+
 	output = open('data.tsv', 'w')
 	output.write('date\tEnglish\tOther\tBoth\n')
-	for time in table_stats:
+
+	for time in sorted(table_stats.keys(), cmp=timeCompare):
 		d = table_stats[time]
 		row = time + '\t' + str(d['eng']) + '\t' + \
 			str(d['other']) + '\t' + str(d['both']) + '\n'
 		output.write(row)
 	output.close()
+
+	outputBar = open("barData.tsv", "w")
+	outputBar.write("date\tLanguage\tComments\tShares\tPosts\n")
+
+	for time in sorted(bar_stats.keys(), cmp=timeCompare):
+		d = bar_stats[time]
+		e_row = "{}\t{}\t{}\t{}\t{}\n".format(
+				time, "English", d["eng"][0], d["eng"][1], d["eng"][2])
+		o_row = "{}\t{}\t{}\t{}\t{}\n".format(
+				time, "Other", d["other"][0], d["other"][1], d["other"][2])
+		outputBar.write(e_row)
+		outputBar.write(o_row)
+	outputBar.close()
 
 def statusToPost(e, lang):
 	output = {}
@@ -203,7 +234,7 @@ def pickComments(comments, shares, status, limit):
 	fout.write(json.dumps(sample_data))
 	fout.close()
 
-comments_file = open("comments_test.html", "r")
+comments_file = open(sys.argv[1], "r")
 comments_raw_data = comments_file.read()
 comments_file.close()
 
@@ -213,7 +244,7 @@ comments_data = formatComments(comments_raw_data)
 # "SELECT owner_comment, title, created_time, \
 # link_id, url from link WHERE owner = me() \
 # and owner_comment <> "";"
-shares_file = open("shares.json", "r")
+shares_file = open(sys.argv[2], "r")
 shares_raw_data = shares_file.read()
 shares_file.close()
 
@@ -222,11 +253,11 @@ shares_data = json.loads(shares_raw_data)["data"]
 # status data retrieved using
 # "SELECT status_id, time, message FROM \
 # status WHERE uid = me();"
-status_file = open("status.json", "r")
+status_file = open(sys.argv[3], "r")
 status_raw_data = status_file.read()
 status_file.close()
 
 status_data = json.loads(status_raw_data)["data"]
 
 outputData(comments_data, shares_data, status_data)
-pickComments(comments_data, shares_data, status_data, 2)
+pickComments(comments_data, shares_data, status_data, 4)
