@@ -71,7 +71,12 @@ def timeCompare(a, b):
 	else:
 		return int(a[0:4]) - int(b[0:4])
 
-def outputData(comments, shares, status):
+def outputData(comments, shares, status, lang_choice):
+	if lang_choice == 1:
+		other_lang = "Korean"
+	else:
+		other_lang = "Chinese"
+
 	lang_ls = []
 	for entry in comments:
 		lang_ls.append([entry["time"], langCheck(entry["text"]), 0])
@@ -110,7 +115,7 @@ def outputData(comments, shares, status):
 			bar_stats[time]["other"][source] += 1
 
 	output = open('data.tsv', 'w')
-	output.write('date\tEnglish\tOther\tBoth\n')
+	output.write('date\tEnglish\t' + other_lang + '\tBoth\n')
 
 	for time in sorted(table_stats.keys(), cmp=timeCompare):
 		d = table_stats[time]
@@ -120,24 +125,27 @@ def outputData(comments, shares, status):
 	output.close()
 
 	outputBar = open("barData.tsv", "w")
-	outputBar.write("date\tLanguage\tComments\tShares\tPosts\n")
+	outputBar.write("date\tLanguage\tComments\tShares\tStatuses\n")
 
 	for time in sorted(bar_stats.keys(), cmp=timeCompare):
 		d = bar_stats[time]
 		e_row = "{}\t{}\t{}\t{}\t{}\n".format(
 				time, "English", d["eng"][0], d["eng"][1], d["eng"][2])
 		o_row = "{}\t{}\t{}\t{}\t{}\n".format(
-				time, "Other", d["other"][0], d["other"][1], d["other"][2])
+				time, other_lang, d["other"][0], d["other"][1], d["other"][2])
 		outputBar.write(e_row)
 		outputBar.write(o_row)
 	outputBar.close()
 
-def statusToPost(e, lang):
+def statusToPost(e, lang, lang_choice):
 	output = {}
 	if lang == 0:
 		output["lang"] = "English"
 	elif lang == 1:
-		output["lang"] = "Other"
+		if lang_choice == 1:
+			output["lang"] = "Korean"
+		else:
+			output["lang"] = "Chinese"
 	else:
 		output["lang"] = "Both"
 	output["type"] = "Status Update"
@@ -147,12 +155,15 @@ def statusToPost(e, lang):
 
 	return output
 
-def shareToPost(e, lang):
+def shareToPost(e, lang, lang_choice):
 	output = {}
 	if lang == 0:
 		output["lang"] = "English"
 	elif lang == 1:
-		output["lang"] = "Other"
+		if lang_choice == 1:
+			output["lang"] = "Korean"
+		else:
+			output["lang"] = "Chinese"
 	else:
 		output["lang"] = "Both"
 	output["type"] = "Share"
@@ -162,12 +173,15 @@ def shareToPost(e, lang):
 
 	return output
 
-def commentToPost(e, lang):
+def commentToPost(e, lang, lang_choice):
 	output = {}
 	if lang == 0:
 		output["lang"] = "English"
 	elif lang == 1:
-		output["lang"] = "Other"
+		if lang_choice == 1:
+			output["lang"] = "Korean"
+		else:
+			output["lang"] = "Chinese"
 	else:
 		output["lang"] = "Both"
 	output["type"] = "Comment"
@@ -177,33 +191,33 @@ def commentToPost(e, lang):
 
 	return output
 
-def retrieveSample(comments, shares, status, limit, lang):
+def retrieveSample(comments, shares, status, limit, lang, lang_choice):
 	outputLs = []
 	if limit <= len(status):
 		for e in random.sample(status, limit):
-			outputLs.append(statusToPost(e, lang))
+			outputLs.append(statusToPost(e, lang, lang_choice))
 	else:
 		for e in status:
-			outputLs.append(statusToPost(e, lang))
+			outputLs.append(statusToPost(e, lang, lang_choice))
 		new_limit = limit - len(outputLs)
 		if new_limit <= len(shares):
 			for e in random.sample(shares, new_limit):
-				outputLs.append(shareToPost(e, lang))
+				outputLs.append(shareToPost(e, lang, lang_choice))
 		else:
 			for e in shares:
-				outputLs.append(shareToPost(e, lang))
+				outputLs.append(shareToPost(e, lang, lang_choice))
 			new_limit = limit - len(outputLs)
 			if new_limit <= len(comments):
 				for e in random.sample(comments, new_limit):
-					outputLs.append(commentToPost(e, lang))
+					outputLs.append(commentToPost(e, lang, lang_choice))
 			else:
 				for e in comments:
-					outputLs.append(commentToPost(e, lang))
+					outputLs.append(commentToPost(e, lang, lang_choice))
 
 	return outputLs
 
 
-def pickComments(comments, shares, status, limit):
+def pickComments(comments, shares, status, lang_choice):
 	# we try to sample from status first, then
 	# shares, then comments.
 	commEngLs = [e for e in comments if langCheck(e["text"]) == 0]
@@ -220,21 +234,33 @@ def pickComments(comments, shares, status, limit):
 
 	sample_data = {}
 	post_count = 1
-	for e in retrieveSample(commEngLs, shareEngLs, statusEngLs, limit, 0):
-		sample_data["post" + str(post_count)] = e
+	for e in retrieveSample(commEngLs, shareEngLs, statusEngLs, 2, 0, lang_choice):
+		sample_data[str(post_count)] = e
 		post_count += 1
-	for e in retrieveSample(commNonEngLs, shareNonEngLs, statusNonEngLs, limit, 1):
-		sample_data["post" + str(post_count)] = e
+	for e in retrieveSample(commNonEngLs, shareNonEngLs, statusNonEngLs, 2, 1, lang_choice):
+		sample_data[str(post_count)] = e
 		post_count += 1
-	for e in retrieveSample(commBothLs, shareBothLs, statusBothLs, limit, 2):
-		sample_data["post" + str(post_count)] = e
+	for e in retrieveSample(commBothLs, shareBothLs, statusBothLs, 2, 2, lang_choice):
+		sample_data[str(post_count)] = e
+		post_count += 1
+
+	for e in retrieveSample(commEngLs, shareEngLs, statusEngLs, 2, 0, lang_choice):
+		sample_data[str(post_count)] = e
+		post_count += 1
+	for e in retrieveSample(commNonEngLs, shareNonEngLs, statusNonEngLs, 2, 1, lang_choice):
+		sample_data[str(post_count)] = e
+		post_count += 1
+	for e in retrieveSample(commBothLs, shareBothLs, statusBothLs, 2, 2, lang_choice):
+		sample_data[str(post_count)] = e
 		post_count += 1
 
 	fout = open("page2.json", "w")
 	fout.write(json.dumps(sample_data))
 	fout.close()
 
-comments_file = open(sys.argv[1], "r")
+lang_choice = int(sys.argv[1])
+
+comments_file = open(sys.argv[2], "r")
 comments_raw_data = comments_file.read()
 comments_file.close()
 
@@ -244,7 +270,7 @@ comments_data = formatComments(comments_raw_data)
 # "SELECT owner_comment, title, created_time, \
 # link_id, url from link WHERE owner = me() \
 # and owner_comment <> "";"
-shares_file = open(sys.argv[2], "r")
+shares_file = open(sys.argv[3], "r")
 shares_raw_data = shares_file.read()
 shares_file.close()
 
@@ -252,12 +278,12 @@ shares_data = json.loads(shares_raw_data)["data"]
 
 # status data retrieved using
 # "SELECT status_id, time, message FROM \
-# status WHERE uid = me();"
-status_file = open(sys.argv[3], "r")
+# status WHERE uid = me() and message <>"";"
+status_file = open(sys.argv[4], "r")
 status_raw_data = status_file.read()
 status_file.close()
 
 status_data = json.loads(status_raw_data)["data"]
 
-outputData(comments_data, shares_data, status_data)
-pickComments(comments_data, shares_data, status_data, 4)
+outputData(comments_data, shares_data, status_data, lang_choice)
+pickComments(comments_data, shares_data, status_data, lang_choice)
