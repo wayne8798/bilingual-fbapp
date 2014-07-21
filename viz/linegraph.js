@@ -1,5 +1,5 @@
 
-var currentYear = 2011;
+var currentYear = 2013;
 var margin = {top: 20, right: 80, bottom: 30, left: 50},
     width = 700 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
@@ -69,7 +69,7 @@ d3.tsv("data.tsv", function(error, data) {
         value: function(d, i) {return d;}
     })
   .property("checked", function(d, i) { 
-        return (i===0); 
+        return (d==2013); 
     });
 
   years.append("label").text(function(d) {return d;}).attr("style","margin-left: 4pt");

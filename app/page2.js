@@ -53,6 +53,14 @@ window.onload = function(){
 	 document.getElementById("message").innerHTML = currentPost.message;
 	 if (currentPost.type == "Comment"){
 	 	document.getElementById("box").style.backgroundColor = "#F6F7F8";
+	 } 
+
+
+	 //hide original if Status
+	 if (currentPost.type == "Status Update"){
+	 	document.getElementById("originalDiv").style.visibility = 'hidden';
+	 } else{
+	 	document.getElementById("originalDiv").style.visibility = 'visible';
 	 }
 	 document.getElementById("original").href = currentPost.original;
 

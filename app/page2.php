@@ -53,7 +53,7 @@ file_put_contents("page2.txt", $posts, FILE_APPEND);
 
 //redirect
 //if the last post
-if ((int)$postNo > 6){
+if ((int)$postNo == 6 ){
 	header('Location: ' . "../viz/index.html");
 } else {
 $url = 'page2.html#post=' . (string)((int)$postNo + 1);
