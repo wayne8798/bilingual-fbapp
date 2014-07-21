@@ -3,6 +3,7 @@ import json
 import random
 import sys
 from time import localtime, strftime
+from sets import Set
 
 def monthConvert(m):
 	year = m[6:10]
@@ -91,8 +92,10 @@ def outputData(comments, shares, status, lang_choice):
 
 	table_stats = {}
 	bar_stats = {}
+	years_ls = []
 	for triple in lang_ls:
 		time = triple[0]
+		years_ls.append(time[:4])
 		text_lang = triple[1]
 		source = triple[2]
 
@@ -113,6 +116,18 @@ def outputData(comments, shares, status, lang_choice):
 			bar_stats[time]["eng"][source] += 1
 		elif text_lang == 1:
 			bar_stats[time]["other"][source] += 1
+
+	for y in Set(years_ls):
+		for i in range(1, 10):
+			time = y + "0" + str(i)
+			if not time in table_stats.keys():
+				table_stats[time] = {'eng': 0, 'other': 0, 'both': 0}
+				bar_stats[time] = {'eng': [0,0,0], "other": [0,0,0]}				
+		for i in range(10, 13):
+			time = y + str(i)
+			if not time in table_stats.keys():
+				table_stats[time] = {'eng': 0, 'other': 0, 'both': 0}
+				bar_stats[time] = {'eng': [0,0,0], "other": [0,0,0]}
 
 	output = open('data.tsv', 'w')
 	output.write('date\tEnglish\t' + other_lang + '\tBoth\n')
