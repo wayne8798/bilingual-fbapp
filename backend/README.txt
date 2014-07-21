@@ -1,6 +1,7 @@
 Directions:
 1. open the comments page in Facebook, scroll all the way down and save the page as "comment.html".
-window.setInterval(function() { window.scroll(0,document.body.offsetHeight); } , 1000);
+timer = window.setInterval(function() { window.scroll(0,document.body.offsetHeight); } , 300);
+window.clearInterval(timer);
 
 2. open FQL explorer (https://developers.facebook.com/tools/explorer).
 3. click on "Get Access Token" and ask for the "user_status" and "read_stream" permissions.
