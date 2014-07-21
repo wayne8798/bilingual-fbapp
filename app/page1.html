@@ -13,7 +13,7 @@
 <body style="margin:0;" onload="javascript:changeLang()">
 
 	<div  style="background-color:#3B5998; color: white; height:50pt"><p>Languange Choices of Bilingual Users on Facebook</p></div>
-    <div style="width:100%; height:100px;"> 
+    
     <div style="float:left; width:50%; text-align:center;"><br>
         <h2 id="scenarioNo">Sample Scenario</h2>
        <p id="scenario">You just came back home from a day at the beach.<br>Write a post on Facebook about your day.</p>
@@ -22,7 +22,12 @@
         <img id="scenarioImage" src="../pics/sample.jpeg" width="450pt">
     </div>
     </div>
-    <div style="float:right; width:50%;"><br>
+    <div style="float:right; width:50%;"><br><br>
+            <p>Select the language you will use for this post.</p>
+            <input type="radio" value="English" name="Q1">English<br/>
+            <input id="L1" type="radio" value="L1" name="Q1">Korean<br/>
+            <input type="radio" value="Both" name="Q1">Both<br/>
+            <br/>
     	<div class="box" style="width:80%">
         <img src="post1.jpg" width="100%">	
         <form action="javascript:getStatus(this.form)" id="usrform">

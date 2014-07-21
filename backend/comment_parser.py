@@ -1,5 +1,8 @@
 import bs4
+import json
 import random
+import sys
+from time import localtime, strftime
 
 def monthConvert(m):
 	year = m[6:10]
@@ -7,6 +10,7 @@ def monthConvert(m):
 	if len(month) == 1:
 		month = '0' + month
 	return year + month
+
 def formatComments(data):
 	soup = bs4.BeautifulSoup(data)
 	entry_ls = []
@@ -53,60 +57,233 @@ def langCheck(us):
 	else:
 		return 0
 
-def outputData(data):
+def convertTimeStamp(timestamp):
+	time = localtime(timestamp)
+	year = str(time.tm_year)
+	month = str(time.tm_mon)
+	if len(month) == 1:
+		month = "0" + month
+	return year + month
+
+def timeCompare(a, b):
+	if int(a[0:4]) == int(b[0:4]):
+		return int(a[4:]) - int(b[4:])
+	else:
+		return int(a[0:4]) - int(b[0:4])
+
+def outputData(comments, shares, status, lang_choice):
+	if lang_choice == 1:
+		other_lang = "Korean"
+	else:
+		other_lang = "Chinese"
+
+	lang_ls = []
+	for entry in comments:
+		lang_ls.append([entry["time"], langCheck(entry["text"]), 0])
+
+	for entry in shares:
+		lang_ls.append([convertTimeStamp(entry["created_time"]), \
+			langCheck(entry["owner_comment"]), 1])
+
+	for entry in status:
+		lang_ls.append([convertTimeStamp(entry["time"]), \
+			langCheck(entry["message"]), 2])
+
 	table_stats = {}
-	for entry in data:
-		time = entry["time"]
-		text_lang = langCheck(entry["text"])
+	bar_stats = {}
+	for triple in lang_ls:
+		time = triple[0]
+		text_lang = triple[1]
+		source = triple[2]
+
 		if not time in table_stats.keys():
 			table_stats[time] = {'eng': 0, 'other': 0, 'both': 0}
+
 		if text_lang == 0:
 			table_stats[time]['eng'] += 1
 		elif text_lang == 1:
 			table_stats[time]['other'] += 1
 		else:
 			table_stats[time]['both'] += 1
+
+		if not time in bar_stats.keys():
+			bar_stats[time] = {'eng': [0,0,0], "other": [0,0,0]}
+
+		if text_lang == 0:
+			bar_stats[time]["eng"][source] += 1
+		elif text_lang == 1:
+			bar_stats[time]["other"][source] += 1
+
 	output = open('data.tsv', 'w')
-	output.write('date\tEnglish\tOther\tBoth\n')
-	for time in table_stats:
+	output.write('date\tEnglish\t' + other_lang + '\tBoth\n')
+
+	for time in sorted(table_stats.keys(), cmp=timeCompare):
 		d = table_stats[time]
 		row = time + '\t' + str(d['eng']) + '\t' + \
 			str(d['other']) + '\t' + str(d['both']) + '\n'
 		output.write(row)
 	output.close()
 
-def pickComments(data, limit):
-	engLs = []
-	noneEngLs = []
-	bothLs = []
-	for entry in data:
-		text_lang = langCheck(entry["text"])
-		if text_lang == 0:
-			engLs.append(entry)
-		elif text_lang == 1:
-			noneEngLs.append(entry)
+	outputBar = open("barData.tsv", "w")
+	outputBar.write("date\tLanguage\tComments\tShares\tStatuses\n")
+
+	for time in sorted(bar_stats.keys(), cmp=timeCompare):
+		d = bar_stats[time]
+		e_row = "{}\t{}\t{}\t{}\t{}\n".format(
+				time, "English", d["eng"][0], d["eng"][1], d["eng"][2])
+		o_row = "{}\t{}\t{}\t{}\t{}\n".format(
+				time, other_lang, d["other"][0], d["other"][1], d["other"][2])
+		outputBar.write(e_row)
+		outputBar.write(o_row)
+	outputBar.close()
+
+def statusToPost(e, lang, lang_choice):
+	output = {}
+	if lang == 0:
+		output["lang"] = "English"
+	elif lang == 1:
+		if lang_choice == 1:
+			output["lang"] = "Korean"
 		else:
-			bothLs.append(entry)
-	if len(engLs) < limit:
-		print engLs
+			output["lang"] = "Chinese"
 	else:
-		print random.sample(engLs, limit)
+		output["lang"] = "Both"
+	output["type"] = "Status Update"
+	output["date"] = strftime("%a, %d %b %Y %H:%M:%S", localtime(e["time"]))
+	output["message"] = e["message"]
+	output["original"] = e["status_id"]
 
-	if len(noneEngLs) < limit:
-		print noneEngLs
+	return output
+
+def shareToPost(e, lang, lang_choice):
+	output = {}
+	if lang == 0:
+		output["lang"] = "English"
+	elif lang == 1:
+		if lang_choice == 1:
+			output["lang"] = "Korean"
+		else:
+			output["lang"] = "Chinese"
 	else:
-		print random.sample(noneEngLs, limit)
+		output["lang"] = "Both"
+	output["type"] = "Share"
+	output["date"] = strftime("%a, %d %b %Y %H:%M:%S", localtime(e["created_time"]))
+	output["message"] = e["owner_comment"]
+	output["original"] = e["url"]
 
-	if len(bothLs) < limit:
-		print bothLs
+	return output
+
+def commentToPost(e, lang, lang_choice):
+	output = {}
+	if lang == 0:
+		output["lang"] = "English"
+	elif lang == 1:
+		if lang_choice == 1:
+			output["lang"] = "Korean"
+		else:
+			output["lang"] = "Chinese"
 	else:
-		print random.sample(bothLs, limit)
+		output["lang"] = "Both"
+	output["type"] = "Comment"
+	output["date"] = e["time"]
+	output["message"] = e["text"]
+	output["original"] = e["link"]
+
+	return output
+
+def retrieveSample(comments, shares, status, limit, lang, lang_choice):
+	outputLs = []
+	if limit <= len(status):
+		for e in random.sample(status, limit):
+			outputLs.append(statusToPost(e, lang, lang_choice))
+	else:
+		for e in status:
+			outputLs.append(statusToPost(e, lang, lang_choice))
+		new_limit = limit - len(outputLs)
+		if new_limit <= len(shares):
+			for e in random.sample(shares, new_limit):
+				outputLs.append(shareToPost(e, lang, lang_choice))
+		else:
+			for e in shares:
+				outputLs.append(shareToPost(e, lang, lang_choice))
+			new_limit = limit - len(outputLs)
+			if new_limit <= len(comments):
+				for e in random.sample(comments, new_limit):
+					outputLs.append(commentToPost(e, lang, lang_choice))
+			else:
+				for e in comments:
+					outputLs.append(commentToPost(e, lang, lang_choice))
+
+	return outputLs
 
 
-comments_file = open("comments_test.html", "r")
-comments_data = comments_file.read()
+def pickComments(comments, shares, status, lang_choice):
+	# we try to sample from status first, then
+	# shares, then comments.
+	commEngLs = [e for e in comments if langCheck(e["text"]) == 0]
+	commNonEngLs = [e for e in comments if langCheck(e["text"]) == 1]
+	commBothLs = [e for e in comments if langCheck(e["text"]) == 2]
+
+	shareEngLs = [e for e in shares if langCheck(e["owner_comment"]) == 0]
+	shareNonEngLs = [e for e in shares if langCheck(e["owner_comment"]) == 1]
+	shareBothLs = [e for e in shares if langCheck(e["owner_comment"]) == 2]
+
+	statusEngLs = [e for e in status if langCheck(e["message"]) == 0]
+	statusNonEngLs = [e for e in status if langCheck(e["message"]) == 1]
+	statusBothLs = [e for e in status if langCheck(e["message"]) == 2]
+
+	sample_data = {}
+	post_count = 1
+	for e in retrieveSample(commEngLs, shareEngLs, statusEngLs, 2, 0, lang_choice):
+		sample_data[str(post_count)] = e
+		post_count += 1
+	for e in retrieveSample(commNonEngLs, shareNonEngLs, statusNonEngLs, 2, 1, lang_choice):
+		sample_data[str(post_count)] = e
+		post_count += 1
+	for e in retrieveSample(commBothLs, shareBothLs, statusBothLs, 2, 2, lang_choice):
+		sample_data[str(post_count)] = e
+		post_count += 1
+
+	for e in retrieveSample(commEngLs, shareEngLs, statusEngLs, 2, 0, lang_choice):
+		sample_data[str(post_count)] = e
+		post_count += 1
+	for e in retrieveSample(commNonEngLs, shareNonEngLs, statusNonEngLs, 2, 1, lang_choice):
+		sample_data[str(post_count)] = e
+		post_count += 1
+	for e in retrieveSample(commBothLs, shareBothLs, statusBothLs, 2, 2, lang_choice):
+		sample_data[str(post_count)] = e
+		post_count += 1
+
+	fout = open("page2.json", "w")
+	fout.write(json.dumps(sample_data))
+	fout.close()
+
+lang_choice = int(sys.argv[1])
+
+comments_file = open(sys.argv[2], "r")
+comments_raw_data = comments_file.read()
 comments_file.close()
 
-clean_data = formatComments(comments_data)
-outputData(clean_data)
-pickComments(clean_data, 2)
+comments_data = formatComments(comments_raw_data)
+
+# shares data retrieved using
+# "SELECT owner_comment, title, created_time, \
+# link_id, url from link WHERE owner = me() \
+# and owner_comment <> "";"
+shares_file = open(sys.argv[3], "r")
+shares_raw_data = shares_file.read()
+shares_file.close()
+
+shares_data = json.loads(shares_raw_data)["data"]
+
+# status data retrieved using
+# "SELECT status_id, time, message FROM \
+# status WHERE uid = me() and message <>"";"
+status_file = open(sys.argv[4], "r")
+status_raw_data = status_file.read()
+status_file.close()
+
+status_data = json.loads(status_raw_data)["data"]
+
+outputData(comments_data, shares_data, status_data, lang_choice)
+pickComments(comments_data, shares_data, status_data, lang_choice)

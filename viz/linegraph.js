@@ -59,6 +59,8 @@ d3.tsv("data.tsv", function(error, data) {
     .data(uniqueYears)    
     .enter().append("label");
 
+  years.attr("style","margin-left:10pt");
+
   years.append("input")
   .attr({
         type: "radio",
@@ -70,7 +72,7 @@ d3.tsv("data.tsv", function(error, data) {
         return (i===0); 
     });
 
-  years.append("label").text(function(d) {return d;});
+  years.append("label").text(function(d) {return d;}).attr("style","margin-left: 4pt");
 
 
 
