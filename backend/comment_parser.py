@@ -2,6 +2,7 @@ import bs4
 import json
 import random
 import sys
+import re
 from time import localtime, strftime
 from sets import Set
 
@@ -39,9 +40,13 @@ def formatComments(data):
 	return entry_ls
 
 def langCheck(us):
+	# filter out names in the format of Axx Bxx.
+	p = re.compile("[A-Z][a-z]* [A-Z][a-z]*")
+	clean_us = p.sub("", us)
+
 	engFlag = 0
 	chiFlag = 0
-	for ch in us:
+	for ch in clean_us:
 		if u'A' <= ch <= u'Z' or u'a' <= ch <= u'z':
 			engFlag = 1
 		if u'\u4e00' <= ch <= u'\u9fff' or \
