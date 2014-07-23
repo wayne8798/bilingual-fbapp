@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FB app</title>
+    <style>
+    div {font-family:"lucida grande"}
+    .box {width: 304pt; padding:2pt; background-color: #E9EAED; }
+    .otherBox {width: 35%; margin-left: 3pt;}
+    p {margin: 0pt;}
+    </style>
+    <script src="viewJson.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+</head>
+<body style="margin:0;">
+
+    <div  style="background-color:#3B5998; color: white; height:50pt"><p>Languange Choices of Bilingual Users on Facebook</p></div>
+    <div style="width:100%; height:100px;">
+    <div style="float:left; width:50%;"><br>
+        <div style="margin-left:20pt;">
+        <h2 id="type" >type of post</h2>
+        <div id="originalDiv">
+        <p>To see the original context of this post, <br>please right-click and Open Link in New Tab:<br><br></p>
+        <a id="original" href="http://www.w3schools.com" target="_blank">Original Post</a> 
+    </div>
+    </div>
+        <div id="box" style="border-style:solid; border-color:#E9EAED; border-width: 1pt; margin:5% 10%; height:100pt;" >
+            <div style="margin: 4pt;">
+                <div style="float:left; width:15%;">
+                    <img src="../pics/profile.jpg" height="50pt" >
+                </div>
+            <p id="name" style="font-size:10pt; color: #5F8AE4;">Hidy Kong</p>
+            <p id="date" style="font-size:8pt; color: gray;">date</p>
+            </div>
+            <br>
+            <p id="message" style="margin:4pt;">Here is the content of the post</p>
+        </div>
+    </div>
+
+</body>
+</html>
