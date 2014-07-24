@@ -24,29 +24,32 @@ window.onload = function(){
 	   	 items.push(val);
 	  	});
 
-	  	console.log(items);
+	 console.log(items);
 
-	 currentPost = items[1];
+	 for (index = 0; index < items.length; ++index) {
 
-	 currentLang = currentPost.lang;
-	 document.getElementById("date").innerHTML = currentPost.date;
-	 document.getElementById("type").innerHTML = currentPost.type;
-	 document.getElementById("message").innerHTML = currentPost.message;
-	 if (currentPost.type == "Comment"){
-	 	document.getElementById("box").style.backgroundColor = "#F6F7F8";
-	 } 
+		 currentPost = items[index];
 
-    var originalDiv = document.getElementById("originalDiv");
-	 //hide original if Status
-	 if (currentPost.type == "Status Update"){
-	 	//document.getElementById("originalDiv").style.visibility = 'hidden';
-    	originalDiv.style.visibility = 'hidden';
-    	originalDiv.style.height = '0px';
-	 } else{
-    	originalDiv.style.visibility = 'visible';
-    	originalDiv.style.height = '100px';
-	 }
-	 document.getElementById("original").href = currentPost.original;
+		 currentLang = currentPost.lang;
+		 document.getElementById("date" + index).innerHTML = currentPost.date;
+		 document.getElementById("type" + index).innerHTML = currentPost.type;
+		 document.getElementById("message" + index).innerHTML = currentPost.message;
+		 if (currentPost.type == "Comment"){
+		 	document.getElementById("box" + index).style.backgroundColor = "#F6F7F8";
+		 } 
+
+	    var originalDiv = document.getElementById("originalDiv" + index);
+		 //hide original if Status
+		 if (currentPost.type == "Status Update"){
+		 	//document.getElementById("originalDiv").style.visibility = 'hidden';
+	    	originalDiv.style.visibility = 'hidden';
+	    	originalDiv.style.height = '0px';
+		 } else{
+	    	originalDiv.style.visibility = 'visible';
+	    	originalDiv.style.height = '100px';
+		 }
+		 document.getElementById("original" + index).href = currentPost.original;
+		}
 
 
 	});

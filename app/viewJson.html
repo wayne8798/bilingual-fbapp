@@ -5,37 +5,54 @@
     <title>FB app</title>
     <style>
     div {font-family:"lucida grande"}
-    .box {width: 304pt; padding:2pt; background-color: #E9EAED; }
+    .box {
+        border-style:solid; border-color:#E9EAED; border-width: 1pt; margin:5% 10%; 
+    }
     .otherBox {width: 35%; margin-left: 3pt;}
     p {margin: 0pt;}
     </style>
     <script src="viewJson.js"></script>
+
+
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 </head>
 <body style="margin:0;">
 
     <div  style="background-color:#3B5998; color: white; height:50pt"><p>Languange Choices of Bilingual Users on Facebook</p></div>
-    <div style="width:100%; height:100px;">
-    <div style="float:left; width:50%;"><br>
-        <div style="margin-left:20pt;">
-        <h2 id="type" >type of post</h2>
-        <div id="originalDiv">
-        <p>To see the original context of this post, <br>please right-click and Open Link in New Tab:<br><br></p>
-        <a id="original" href="http://www.w3schools.com" target="_blank">Original Post</a> 
-    </div>
-    </div>
-        <div id="box" style="border-style:solid; border-color:#E9EAED; border-width: 1pt; margin:5% 10%; height:100pt;" >
-            <div style="margin: 4pt;">
-                <div style="float:left; width:15%;">
-                    <img src="../pics/profile.jpg" height="50pt" >
-                </div>
-            <p id="name" style="font-size:10pt; color: #5F8AE4;">Hidy Kong</p>
-            <p id="date" style="font-size:8pt; color: gray;">date</p>
-            </div>
-            <br>
-            <p id="message" style="margin:4pt;">Here is the content of the post</p>
-        </div>
-    </div>
 
+
+
+<script type="text/javascript">
+
+for(var lp=0; lp < 12; lp++)
+{
+
+document.write('    <div style="width:100%; height:100px;">');
+document.write('    <div style="float:left; width:50%;"><br>');
+document.write('        <div style="margin-left:20pt;">');
+document.write('        <h2>Post '+(lp+1)+'</h2>');
+document.write('        <h2 id="type'+lp+'">type of post</h2>');
+document.write('        <div id="originalDiv'+lp+'">');
+document.write('        <p>To see the original context of this post, <br>please right-click and Open Link in New Tab:<br><br></p>');
+document.write('<a id="original' + lp +'" href="http://www.w3schools.com" target="_blank">Original Post</a> ');
+document.write('</div>');
+document.write('</div>');
+
+document.write('<div id="box'+lp+'" class="box">');
+document.write('  <div style="margin: 4pt;">');
+document.write('    <div style="float:left; width:15%;">');
+document.write('      <img src="../pics/profile.jpg" height="50pt" >');
+document.write('     </div>');
+document.write('     <p id="name" style="font-size:10pt; color: #5F8AE4;">Your Name</p>');
+document.write('     <p id="date'+lp+'" style="font-size:8pt; color: gray;">date</p>');
+document.write('     </div>');
+document.write('     <br>');
+document.write('     <p id="message'+(lp)+'" style="margin:4pt;">Here is the content of the post</p>');
+document.write('   </div>');
+document.write(' </div>');
+
+}
+
+</script>
 </body>
 </html>
