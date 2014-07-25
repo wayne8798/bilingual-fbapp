@@ -11,6 +11,7 @@ $langOther = $_POST["langOther"];
 $langChoiceKorean = $_POST["langChoiceKorean"];
 $langOtherKorean = $_POST["langOtherKorean"];
 $postNo = $_POST["postNo"];
+$L1 = $_POST["L1"];
 
 $posts = "\nPost " . $postNo . " \n";
 $posts .= "1. Do you remember posting this message? ".$Q1." \n";
@@ -56,7 +57,7 @@ file_put_contents("page2.txt", $posts, FILE_APPEND);
 if ((int)$postNo == 6 ){
 	header('Location: ' . "../viz/index.html");
 } else {
-$url = 'page2.html#post=' . (string)((int)$postNo + 1);
+$url = 'page2.html#post=' . (string)((int)$postNo + 1) .'&lang=' . $L1;
 header('Location: ' . $url);
 }
 
