@@ -25,7 +25,7 @@ var yAxis2 = d3.svg.axis()
 var parseDate = d3.time.format("%Y%m").parse,
     bisectDate = d3.bisector(function(d) { return d.date; }).left;
 
-startingYear = 2011;
+startingYear = 2013;
 startingMonth = 9;
 
 
@@ -53,7 +53,7 @@ d3.tsv("barData.tsv", function(error, data) {
   //month starts from 0
   filteredData = data.filter(function(d, i){ return (d.date.getFullYear() == startingYear && d.date.getMonth() == startingMonth); });
 
-
+  console.log(startingYear);
   console.log(filteredData);
   x2.domain(data.map(function(d) { return d.Language; }));
   y2.domain([0, d3.max(data, function(d) { return d.total; })]);
