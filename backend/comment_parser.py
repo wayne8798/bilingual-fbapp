@@ -253,25 +253,16 @@ def pickComments(comments, shares, status, lang_choice):
 	statusBothLs = [e for e in status if langCheck(e["message"]) == 2]
 
 	sample_data = {}
-	post_count = 1
-	for e in retrieveSample(commEngLs, shareEngLs, statusEngLs, 2, 0, lang_choice):
-		sample_data[str(post_count)] = e
+	post_index = [1,2,7,8,3,4,9,10,5,6,11,12]
+	post_count = 0
+	for e in retrieveSample(commEngLs, shareEngLs, statusEngLs, 4, 0, lang_choice):
+		sample_data[str(post_index[post_count])] = e
 		post_count += 1
-	for e in retrieveSample(commNonEngLs, shareNonEngLs, statusNonEngLs, 2, 1, lang_choice):
-		sample_data[str(post_count)] = e
+	for e in retrieveSample(commNonEngLs, shareNonEngLs, statusNonEngLs, 4, 1, lang_choice):
+		sample_data[str(post_index[post_count])] = e
 		post_count += 1
-	for e in retrieveSample(commBothLs, shareBothLs, statusBothLs, 2, 2, lang_choice):
-		sample_data[str(post_count)] = e
-		post_count += 1
-
-	for e in retrieveSample(commEngLs, shareEngLs, statusEngLs, 2, 0, lang_choice):
-		sample_data[str(post_count)] = e
-		post_count += 1
-	for e in retrieveSample(commNonEngLs, shareNonEngLs, statusNonEngLs, 2, 1, lang_choice):
-		sample_data[str(post_count)] = e
-		post_count += 1
-	for e in retrieveSample(commBothLs, shareBothLs, statusBothLs, 2, 2, lang_choice):
-		sample_data[str(post_count)] = e
+	for e in retrieveSample(commBothLs, shareBothLs, statusBothLs, 4, 2, lang_choice):
+		sample_data[str(post_index[post_count])] = e
 		post_count += 1
 
 	fout = open("page2.json", "w")
