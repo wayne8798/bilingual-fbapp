@@ -44,7 +44,6 @@ d3.tsv("barData.tsv", function(error, data) {
 
 
   data.forEach(function(d) {
-
     d.date = parseDate(d.date);
     var y0 = 0;
     d.types = color2.domain().map(function(name) { return {name: name, y0: y0, y1: y0 += +d[name]}; });
@@ -55,6 +54,7 @@ d3.tsv("barData.tsv", function(error, data) {
   filteredData = data.filter(function(d, i){ return (d.date.getFullYear() == startingYear && d.date.getMonth() == startingMonth); });
 
 
+  console.log(filteredData);
   x2.domain(data.map(function(d) { return d.Language; }));
   y2.domain([0, d3.max(data, function(d) { return d.total; })]);
 
