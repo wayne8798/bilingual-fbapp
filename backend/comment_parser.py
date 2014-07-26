@@ -19,24 +19,24 @@ def formatComments(data):
 	for month in soup.find_all("div", class_="_iqp stat_elem"):
 		time = monthConvert(month["id"])
 		for tr in month.find_all("tr"):
-			info_msg_switch = 0;
+			info_flag = 0;
+			msg_flag = 0
 			entry = {}
 			for td in tr.find_all("td"):
-				if info_msg_switch == 0:
+				if info_flag == 0:
 					info = td.find("div", class_="_42ef")
 					if info != None and info.div != None:
 						links = info.div.find_all("a") 
 						if len(links) > 1:
 							entry["link"] = links[1]["href"] + "\n"
-							info_msg_switch = 1
+							info_flag = 1
 				else:
 					msgs = td.find_all("div", class_="fsm")
 					for msg in msgs:
 						if len(msg["class"]) == 1:
 							entry["text"] = msg.get_text()
-					if len(msgs) == 0:
-						info_msg_switch = 0
-			if info_msg_switch > 0:
+							msg_flag = 1
+			if info_flag > 0 and msg_flag > 0:
 				entry["time"] = time
 				entry_ls.append(entry)
 	return entry_ls
@@ -87,7 +87,6 @@ def outputData(comments, shares, status, lang_choice):
 
 	lang_ls = []
 	for entry in comments:
-		print entry
 		lang_ls.append([entry["time"], langCheck(entry["text"]), 0])
 
 	for entry in shares:
