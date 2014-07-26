@@ -34,6 +34,8 @@ def formatComments(data):
 					for msg in msgs:
 						if len(msg["class"]) == 1:
 							entry["text"] = msg.get_text()
+					if len(msgs) == 0:
+						info_msg_switch = 0
 			if info_msg_switch > 0:
 				entry["time"] = time
 				entry_ls.append(entry)
@@ -85,6 +87,7 @@ def outputData(comments, shares, status, lang_choice):
 
 	lang_ls = []
 	for entry in comments:
+		print entry
 		lang_ls.append([entry["time"], langCheck(entry["text"]), 0])
 
 	for entry in shares:
