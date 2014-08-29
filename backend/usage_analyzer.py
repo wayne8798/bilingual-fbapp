@@ -73,26 +73,27 @@ def langCheck(us):
 		else:
 			return 0
 
-def outputData(comments, shares, status):
+def outputData(folder_name, comments, shares, status):
 	langid.set_languages(['en','es'])
 
-	comments_count = [0, 0, 0, 0]
-	shares_count = [0, 0, 0, 0]
-	status_count = [0, 0, 0, 0]
+	output_array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 	for entry in comments:
-		comments_count[langCheck(entry["text"])] += 1
+		output_array[langCheck(entry["text"])] += 1
 
 	for entry in shares:
-		shares_count[langCheck(entry["owner_comment"])] += 1
+		output_array[langCheck(entry["owner_comment"]) + 4] += 1
 
 	for entry in status:
-		status_count[langCheck(entry["message"])] += 1
+		output_array[langCheck(entry["message"]) + 8] += 1
 
-	print comments_count
-	print shares_count
-	print status_count
+	output_string = folder_name
+	for i in output_array:
+		output_string += "," + str(i)
 
-comments_file = open(sys.argv[1], "r")
+	print output_string
+
+folder_name = sys.argv[1]
+comments_file = open(folder_name + "/comment.html", "r")
 comments_raw_data = comments_file.read()
 comments_file.close()
 
@@ -102,7 +103,7 @@ comments_data = formatComments(comments_raw_data)
 # "SELECT owner_comment, title, created_time, \
 # link_id, url from link WHERE owner = me() \
 # and owner_comment <> "";"
-shares_file = open(sys.argv[2], "r")
+shares_file = open(folder_name + "/share.json", "r")
 shares_raw_data = shares_file.read()
 shares_file.close()
 
@@ -111,10 +112,10 @@ shares_data = json.loads(shares_raw_data)["data"]
 # status data retrieved using
 # "SELECT status_id, time, message FROM \
 # status WHERE uid = me() and message <>"";"
-status_file = open(sys.argv[3], "r")
+status_file = open(folder_name + "/status.json", "r")
 status_raw_data = status_file.read()
 status_file.close()
 
 status_data = json.loads(status_raw_data)["data"]
 
-outputData(comments_data, shares_data, status_data)
+outputData(folder_name, comments_data, shares_data, status_data)
