@@ -19,7 +19,7 @@ def formatComments(data):
 	for month in soup.find_all("div", class_="_iqp stat_elem"):
 		time = monthConvert(month["id"])
 		for tr in month.find_all("tr"):
-			info_flag = 0;
+			info_flag = 0
 			msg_flag = 0
 			entry = {}
 			for td in tr.find_all("td"):

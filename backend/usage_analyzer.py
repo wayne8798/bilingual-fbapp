@@ -3,6 +3,7 @@ import json
 import random
 import sys
 import re
+import langid
 from time import localtime, strftime
 from sets import Set
 
@@ -49,6 +50,9 @@ def langCheck(us):
 	engFlag = 0
 	chiFlag = 0
 	for ch in clean_us:
+		if u'\u3040' <= ch <= u'\u309f' or \
+			u'\u30a0' <= ch <= u'\u30ff':
+			return 3
 		if u'A' <= ch <= u'Z' or u'a' <= ch <= u'z':
 			engFlag = 1
 		if u'\u4e00' <= ch <= u'\u9fff' or \
@@ -57,107 +61,36 @@ def langCheck(us):
 		if engFlag == 1 and chiFlag == 1:
 			break
 
-	# return 0 for English, 1 for none-English, 2 for both
+	# return 0 for English, 1 for none-English,
+	# 2 for both, 3 for other (Japanese & Spanish)
 	if engFlag == 1 and chiFlag == 1:
 		return 2
 	elif chiFlag == 1:
 		return 1
 	else:
-		return 0
+		if langid.classify(us)[0] == 'es':
+			return 3
+		else:
+			return 0
 
-def convertTimeStamp(timestamp):
-	time = localtime(timestamp)
-	year = str(time.tm_year)
-	month = str(time.tm_mon)
-	if len(month) == 1:
-		month = "0" + month
-	return year + month
+def outputData(comments, shares, status):
+	langid.set_languages(['en','es'])
 
-def timeCompare(a, b):
-	if int(a[0:4]) == int(b[0:4]):
-		return int(a[4:]) - int(b[4:])
-	else:
-		return int(a[0:4]) - int(b[0:4])
-
-def outputData(comments, shares, status, lang_choice):
-	if lang_choice == 1:
-		other_lang = "Korean"
-	else:
-		other_lang = "Chinese"
-
-	lang_ls = []
+	comments_count = [0, 0, 0, 0]
+	shares_count = [0, 0, 0, 0]
+	status_count = [0, 0, 0, 0]
 	for entry in comments:
-		lang_ls.append([entry["time"], langCheck(entry["text"]), 0])
+		comments_count[langCheck(entry["text"])] += 1
 
 	for entry in shares:
-		lang_ls.append([convertTimeStamp(entry["created_time"]), \
-			langCheck(entry["owner_comment"]), 1])
+		shares_count[langCheck(entry["owner_comment"])] += 1
 
 	for entry in status:
-		lang_ls.append([convertTimeStamp(entry["time"]), \
-			langCheck(entry["message"]), 2])
+		status_count[langCheck(entry["message"])] += 1
 
-	table_stats = {}
-	bar_stats = {}
-	years_ls = []
-	for triple in lang_ls:
-		time = triple[0]
-		years_ls.append(time[:4])
-		text_lang = triple[1]
-		source = triple[2]
-
-		if not time in table_stats.keys():
-			table_stats[time] = {'eng': 0, 'other': 0, 'both': 0}
-
-		if text_lang == 0:
-			table_stats[time]['eng'] += 1
-		elif text_lang == 1:
-			table_stats[time]['other'] += 1
-		else:
-			table_stats[time]['both'] += 1
-
-		if not time in bar_stats.keys():
-			bar_stats[time] = {'eng': [0,0,0], "other": [0,0,0]}
-
-		if text_lang == 0:
-			bar_stats[time]["eng"][source] += 1
-		elif text_lang == 1:
-			bar_stats[time]["other"][source] += 1
-
-	for y in Set(years_ls):
-		for i in range(1, 10):
-			time = y + "0" + str(i)
-			if not time in table_stats.keys():
-				table_stats[time] = {'eng': 0, 'other': 0, 'both': 0}
-				bar_stats[time] = {'eng': [0,0,0], "other": [0,0,0]}				
-		for i in range(10, 13):
-			time = y + str(i)
-			if not time in table_stats.keys():
-				table_stats[time] = {'eng': 0, 'other': 0, 'both': 0}
-				bar_stats[time] = {'eng': [0,0,0], "other": [0,0,0]}
-
-	output = open('data.tsv', 'w')
-	output.write('date\tEnglish\t' + other_lang + '\tBoth\n')
-
-	for time in sorted(table_stats.keys(), cmp=timeCompare):
-		d = table_stats[time]
-		row = time + '\t' + str(d['eng']) + '\t' + \
-			str(d['other']) + '\t' + str(d['both']) + '\n'
-		output.write(row)
-	output.close()
-
-	outputBar = open("barData.tsv", "w")
-	outputBar.write("date\tLanguage\tComments\tShares\tStatuses\n")
-
-	for time in sorted(bar_stats.keys(), cmp=timeCompare):
-		d = bar_stats[time]
-		e_row = "{}\t{}\t{}\t{}\t{}\n".format(
-				time, "English", d["eng"][0], d["eng"][1], d["eng"][2])
-		o_row = "{}\t{}\t{}\t{}\t{}\n".format(
-				time, other_lang, d["other"][0], d["other"][1], d["other"][2])
-		outputBar.write(e_row)
-		outputBar.write(o_row)
-	outputBar.close()
+	print comments_count
+	print shares_count
+	print status_count
 
 comments_file = open(sys.argv[1], "r")
 comments_raw_data = comments_file.read()
@@ -184,4 +117,4 @@ status_file.close()
 
 status_data = json.loads(status_raw_data)["data"]
 
-outputData(comments_data, shares_data, status_data, lang_choice)
+outputData(comments_data, shares_data, status_data)
