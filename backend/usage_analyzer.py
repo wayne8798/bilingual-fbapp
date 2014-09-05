@@ -69,6 +69,7 @@ def langCheck(us):
 		return 1
 	else:
 		if langid.classify(us)[0] == 'es':
+			print us
 			return 3
 		else:
 			return 0
